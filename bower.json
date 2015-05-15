@@ -4,7 +4,8 @@
   "description": "Trigger javaScript action on pulldown",
   "main": "index.html",
   "keywords": [
-    "polymer"
+    "polymer",
+    "web-components"
   ],
   "authors": [
     "Andrew Bone <AndrewB05@gmail.com>"
