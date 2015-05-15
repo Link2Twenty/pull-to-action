@@ -13,6 +13,6 @@ This polymer element performs a "pull to refresh" animation with a callback to t
 
 ## Install with bower
 
-First you need bower, [see their site](http://http://bower.io/) for details 
+First you need bower, [see their site](http://bower.io/) for details 
 
 bower install pull-to-action
