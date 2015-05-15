@@ -9,7 +9,7 @@ This polymer element performs a "pull to refresh" animation with a callback to t
 | action | A callback function that for which action should be performed | alert("You need to set the action attribute") |
 | color | Sets color of the refresh icon | #ccc |
 | distance | How far the user has to drag the screen | 100 |
-| container | ID of container element, if this is to be body to need you give body the id body | body |
+| container | ID of container element, if this is to be body you need to give body the id body | body |
 
 ## Install with bower
 
