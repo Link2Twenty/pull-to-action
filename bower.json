@@ -1,0 +1,25 @@
+{
+  "name": "pull-to-action",
+  "version": "0.0.1",
+  "description": "Trigger javaScript action on pulldown",
+  "main": "index.html",
+  "keywords": [
+    "polymer"
+  ],
+  "authors": [
+    "Andrew Bone <AndrewB05@gmail.com>"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "polymer": "Polymer/polymer#^0.5",
+    "core-icon": "Polymer/core-icon#~0.5.6",
+    "core-icons": "Polymer/core-icons#~0.5.6"
+  }
+}
