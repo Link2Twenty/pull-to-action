@@ -1,0 +1,116 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../core-icons/core-icons.html">
+<link rel="import" href="../core-icon/core-icon.html">
+<polymer-element attributes="action distance container color" name="pull-to-action">
+  <template>
+    <style>
+    :host {
+	  display:block;
+      position: absolute;
+	  width: calc(100% - 8px);
+	  text-align:center;
+	  z-index:99;
+    }
+	.refreshIcon {
+	  width: 32px;
+	  height: 32px;
+	  background-color:white;
+	  border-radius: 50%;
+	  border: 1px solid {{color}};
+	  top: calc(({{drag}}px - 50px) / 3);
+	  color: {{color}};
+	  opacity: calc({{drag}} / {{distance}});
+	  transform: rotate({{spin}}deg);
+	  filter: grayscale({{desat}}%);
+	  -webkit-filter: grayscale({{desat}}%);
+	}
+    </style>
+		<span flex><core-icon class="refreshIcon" icon="icons:refresh"></core-icon></span>
+		<script>
+		var dragStore = 0;
+		var spinStore = -90;
+		var timerDing = 0;
+		function spinTimer() {
+			if (timerDing == 0) {
+				spinStore = spinStore + 2;
+				setTimeout('document.querySelector("pull-to-action").spin = spinStore; spinTimer();',1);
+			}
+		}
+		function bounceToDistance() {
+			if (dragStore > 150) {
+				dragStore = dragStore - 4;
+				spinStore = spinStore + 4;
+				setTimeout('document.querySelector("pull-to-action").drag = dragStore; document.querySelector("pull-to-action").spin = spinStore; bounceToDistance();',1);          
+			} else {
+				{{action}};
+				setTimeout('bounceToZero(); timerDing++;', 1000);
+				spinTimer();
+			}			
+		}
+		function bounceToZero() {
+			if (dragStore > 0) {
+				dragStore--;
+				spinStore--;
+				setTimeout('document.querySelector("pull-to-action").drag = dragStore; document.querySelector("pull-to-action").spin = spinStore; bounceToZero();',5);          
+			}   
+		}
+		window.addEventListener('load', function() {
+			var lastTouchY = 0;
+			var startTouchY = 0;
+			var endTouchY = 0;
+			var desat = 100;
+			var touchstartHandler = function(e) {
+				spinStore = -90;
+				timerDing = 0;
+				if (e.touches.length != 1) return;
+				lastTouchY = e.touches[0].clientY;
+				startTouchY = e.touches[0].clientY;
+				document.querySelector('pull-to-action').width = window.innerWidth;
+			}
+			var touchmoveHandler = function(e) {
+				var touchY = e.touches[0].clientY;
+				var touchYDelta = touchY - lastTouchY;
+				lastTouchY = touchY;
+				endTouchY = e.touches[0].clientY;
+				if (document.getElementById('{{container}}').scrollTop == 0) {
+					dragStore = endTouchY - startTouchY;
+					spinStore = spinStore - (dragStore / {{distance}});
+					desat = 100 - ((dragStore / {{distance}}) * 100);
+					document.querySelector('pull-to-action').desat = desat;
+					document.querySelector('pull-to-action').drag = dragStore;
+					document.querySelector('pull-to-action').spin = spinStore;
+				}
+				if (document.getElementById('{{container}}').scrollTop == 0 && touchYDelta > 0) {
+					e.preventDefault();
+					return;
+				}
+				if (document.getElementById('{{container}}').scrollTop == 0 && dragStore > 0) {
+					e.preventDefault();
+					return;
+				}
+			} 
+			var touchendHandler = function(e) {
+				if (document.getElementById('{{container}}').scrollTop == 0 && dragStore >= {{distance}}) {
+					bounceToDistance();
+				} else {
+					bounceToZero();
+				}
+			}
+			document.addEventListener('touchstart', touchstartHandler, false);
+			document.addEventListener('touchmove', touchmoveHandler, false);
+			document.addEventListener('touchend', touchendHandler, false);
+		});
+		</script>
+	</template>
+	<script>
+		Polymer({
+			action: 'alert("You need to set the action attribute")',
+			distance: '100',
+			container: 'body',
+			drag: '0',
+			desat: '100',
+			spin: '-90',
+			color: '#ccc'
+		});
+	</script>
+</polymer-element>
