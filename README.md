@@ -24,12 +24,12 @@ bower install --save pull-to-action
 If you are looking at useing other peoples custom polymer elements I am going to guess you have some idea what's going on already. If not have a look at the [polymer site](http://polymer-project.org).
 
 Put a link to pull to action in your header, it should look something like.
-```
+```html
 <link rel="import" href="bower_components/pull-to-action/pull-to-action.html">
 ```
 
 Now that you have imported it you can get to using it on your page
-```
+```html
 <body>
 <div id="scrollablecontainer">
 <pull-to-action action="location.reload()" color="red" container="scrollablecontainer"></pull-to-action>
