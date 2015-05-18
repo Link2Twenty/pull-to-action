@@ -45,4 +45,9 @@ Now with very little code we have made a simple red spinning icon to reload the 
 
 ![example image](http://s8.postimg.org/9d6yced8l/example.png)
 
+#### What you can make
+
+Here is a little example of what it can look like baked into a real app
+![Screenshot](http://gifyu.com/images/firstPatch.gif)
+
 I hope you get some good use out of this, and please don't feel embarrassed to submit bug reports, or pull requests.
