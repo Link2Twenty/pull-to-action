@@ -21,7 +21,7 @@ bower install --save pull-to-action
 
 ### How to use
 
-If you are looking at useing other peoples custom polymer elements I am going to guess you have some idea what's going on already. If not have a look at the [polymer site](http://polyer-project.org).
+If you are looking at useing other peoples custom polymer elements I am going to guess you have some idea what's going on already. If not have a look at the [polymer site](http://polymer-project.org).
 
 Put a link to pull to action in your header, it should look something like.
 ```
