@@ -1,16 +1,17 @@
 {
   "name": "pull-to-action",
-  "version": "0.0.1",
+  "version": "0.0.3",
   "description": "Trigger javaScript action on pulldown",
   "main": "pull-to-action.html",
   "keywords": [
-    "polymer",
+    "Polymer",
     "web-components"
   ],
   "authors": [
     "Andrew Bone <AndrewB05@gmail.com>"
   ],
   "license": "MIT",
+  "homepage": "https://github.com/link2twenty/pull-to-action",
   "ignore": [
     "**/.*",
     "node_modules",
@@ -21,6 +22,7 @@
   "dependencies": {
     "polymer": "Polymer/polymer#^0.5",
     "core-icon": "Polymer/core-icon#~0.5.6",
-    "core-icons": "Polymer/core-icons#~0.5.6"
+    "core-icons": "Polymer/core-icons#~0.5.6",
+    "paper-shadow": "Polymer/paper-shadow#^0.5"
   }
 }
