@@ -1,5 +1,6 @@
 <link rel="import" href="../polymer/polymer.html">
 <link rel="import" href="../core-icons/core-icons.html">
+<link rel="import" href="../paper-shadow/paper-shadow.html">
 <link rel="import" href="../core-icon/core-icon.html">
 <polymer-element attributes="action distance container color" name="pull-to-action">
   <template>
@@ -7,28 +8,36 @@
     :host {
 	  display:block;
       position: absolute;
-	  width: calc(100% - 8px);
 	  text-align:center;
 	  z-index:99;
+	  width: 100%;
     }
+	.refreshShadow {
+	  width: 32px;
+	  height: 32px;
+	  border-radius: 50%;
+	  top: calc(({{drag}}px - 50px) / 3);
+	  opacity: calc({{drag}} / {{distance}});
+	  margin: 0 auto;
+	  transform: scale({{scale}});
+	}
 	.refreshIcon {
 	  width: 32px;
 	  height: 32px;
 	  background-color:white;
 	  border-radius: 50%;
 	  border: 1px solid {{color}};
-	  top: calc(({{drag}}px - 50px) / 3);
 	  color: {{color}};
-	  opacity: calc({{drag}} / {{distance}});
 	  transform: rotate({{spin}}deg);
 	  filter: grayscale({{desat}}%);
 	  -webkit-filter: grayscale({{desat}}%);
 	}
     </style>
-		<span flex><core-icon class="refreshIcon" icon="icons:refresh"></core-icon></span>
+		<paper-shadow class="refreshShadow" z="2"><core-icon class="refreshIcon" icon="icons:refresh"></core-icon></paper-shadow>
 		<script>
 		var dragStore = 0;
 		var spinStore = -90;
+		var scaleStore = 1;
 		var timerDing = 0;
 		function spinTimer() {
 			if (timerDing == 0) {
@@ -43,8 +52,23 @@
 				setTimeout('document.querySelector("pull-to-action").drag = dragStore; document.querySelector("pull-to-action").spin = spinStore; bounceToDistance();',1);          
 			} else {
 				{{action}};
-				setTimeout('bounceToZero(); timerDing++;', 1000);
+				setTimeout('scaleAway();', 1000);
 				spinTimer();
+			}			
+		}
+		function scaleAway() {
+			if (scaleStore > 0) {
+				scaleStore = scaleStore - 0.01;
+				setTimeout('document.querySelector("pull-to-action").scale = scaleStore; scaleAway();',1);          
+			} else {
+				dragStore = 0;
+				spinStore = -90;
+				scaleStore = 1;
+				timerDing++;
+				document.querySelector("pull-to-action").drag = dragStore;
+				document.querySelector("pull-to-action").spin = spinStore;
+				document.querySelector("pull-to-action").scale = scaleStore;
+				setTimeout('timerDing = 0;',1);
 			}			
 		}
 		function bounceToZero() {
@@ -65,7 +89,6 @@
 				if (e.touches.length != 1) return;
 				lastTouchY = e.touches[0].clientY;
 				startTouchY = e.touches[0].clientY;
-				document.querySelector('pull-to-action').width = window.innerWidth;
 			}
 			var touchmoveHandler = function(e) {
 				var touchY = e.touches[0].clientY;
@@ -110,6 +133,7 @@
 			drag: '0',
 			desat: '100',
 			spin: '-90',
+			scale: '1',
 			color: '#ccc'
 		});
 	</script>
