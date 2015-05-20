@@ -9,16 +9,27 @@
 	</head>
 	  
 	<body id="body">
+        
+        <!-- This is how you add pull-to-action element in your page -->
 		<pull-to-action distance="150" color="#77ACFF" action="changeText()"></pull-to-action>
-		<div style="height:200%;text-align:center;" id="example">This only works on mobile (but you can fake it in chrome)</div>
+        
+        <!-- Some other sections of the page -->
+		<div style="height:200%; text-align:center;" id="example">
+            This only works on mobile (but you can fake it in chrome)
+        </div>
 		
-		<script>
-			var text = '{"update":[' +
-			'{"message":"Proud to say you figured it out!"}]}';
-			function changeText() {
-			obj = JSON.parse(text);
-			document.getElementById("example").innerHTML =
-			obj.update[0].message;
+		<script type="text/javascript">
+            /* 
+             * Some text data 
+             */
+            var updatedText = "Proud to say you figured it out!";
+            
+            /* 
+             * this callback function needs to be called 
+             * when the pull-to-action element is released 
+             */
+			function changeText () {
+                document.getElementById("example").innerHTML = updatedText;
 			}
 		</script>
 	</body>
