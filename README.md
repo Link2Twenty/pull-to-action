@@ -147,6 +147,9 @@ function changeText() {
 }
 changeText();
 ```
-The code is quite a bit shorted but no matter how long it take to load the data the animation time will be the same. Gif below.
+The code is quite a bit shorter but no matter how long it take to load the data the animation time will be the same. Gif below.
 
 ![Screenshot](http://gifyu.com/images/withoutactionToggle.gif)
+
+### Conclusion
+If you don't feel confident using promises pull-to-action will work fine without them, but if you know how to use them, or even if you want to learn how to use them, it make a huge difference to the aesthetics of your app.
