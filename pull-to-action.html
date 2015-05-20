@@ -52,6 +52,21 @@
 
 			var element = document.querySelector("pull-to-action");
 
+			function actionTimer() {
+			if (actionTrigger == 1) {
+				spinStore = spinStore + 2;
+				setTimeout( function() {
+					element.spin = spinStore;
+					actionTimer();
+				},1);
+			} else {
+				setTimeout( function() {
+					scaleAway();
+				}, 500);
+				spinTimer();
+			}
+		}
+			
 			function spinTimer() {
 				if (timerDing == 0) {
 					spinStore = spinStore + 2;
@@ -73,11 +88,15 @@
 					},1);          
 				} else {
 					{{action}};
-					setTimeout( function() {
-						scaleAway();
-					}, 1000);
-					spinTimer();
-				}			
+					if(typeof actionTrigger === "undefined"){
+						setTimeout( function() {
+							scaleAway();
+						}, 1000);
+						spinTimer();
+					} else {
+						actionTimer();
+					}			
+				}
 			}
 
 			function scaleAway() {
@@ -177,8 +196,8 @@
 			action: 'alert("You need to set the action attribute")',
 
 			/**
-			* The max distance till when the refresh icon
-			* can be pulled to
+			* The distance until the refresh icon
+			* triggers action
 			*
 			* @attribute distance
 			* @type integer
@@ -208,6 +227,7 @@
 
 			/**
 			* Other variables
+			* these are calculated by the JS
 			*
 			*/
 			drag: '0',
