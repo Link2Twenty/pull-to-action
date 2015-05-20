@@ -5,8 +5,8 @@
 
 
 <polymer-element attributes="action distance container color" name="pull-to-action">
-    <template>
-        <style>
+	<template>
+		<style>
 			:host {
 				display:block;
 				position: absolute;
@@ -37,178 +37,179 @@
 			paper-spinner {
 				z-index: 90;
 			}
-        </style>
-        
-        <paper-shadow class="refreshShadow" z="2">
-            <core-icon class="refreshIcon" icon="icons:refresh"></core-icon>
-        </paper-shadow>
-        
-        <script type="text/javascript">
-            
-            var dragStore = 0,
-                spinStore = -90,
-                scaleStore = 1,
-                timerDing = 0;
-            
-            var element = document.querySelector("pull-to-action");
-            
-            function spinTimer() {
-                if (timerDing == 0) {
-                    spinStore = spinStore + 2;
-                    setTimeout( function() {
-                        element.spin = spinStore;
-                        spinTimer();
-                    },1);
-                }
-            }
-            
-            function bounceToDistance() {
-                if (dragStore > 150) {
-                    dragStore = dragStore - 4;
-                    spinStore = spinStore + 4;
-                    setTimeout(function() {
-                        element.drag = dragStore;
-                        element.spin = spinStore;
-                        bounceToDistance();
-                    },1);          
-                } else {
-                    {{action}};
-                    setTimeout( function() {
-                        scaleAway();
-                    }, 1000);
-                    spinTimer();
-                }			
-            }
-            
-            function scaleAway() {
-                if (scaleStore > 0) {
-                    scaleStore = scaleStore - 0.01;
-                    setTimeout( function() {
-                        element.scale = scaleStore; 
-                        scaleAway();
-                    },1);          
-                } else {
-                    dragStore = 0;
-                    spinStore = -90;
-                    scaleStore = 1;
-                    timerDing++;
-                    element.drag = dragStore;
-                    element.spin = spinStore;
-                    element.scale = scaleStore;
-                    setTimeout( function() {
-                        timerDing = 0;
-                    },1);
-                }			
-            }
-            function bounceToZero() {
-                if (dragStore > 0) {
-                    dragStore--;
-                    spinStore--;
-                    setTimeout( function() {
-                        element.drag = dragStore;
-                        element.spin = spinStore;
-                        bounceToZero();
-                    },5);          
-                }   
-            }
-            window.addEventListener('load', function() {
-                var lastTouchY = 0;
-                var startTouchY = 0;
-                var endTouchY = 0;
-                var desat = 100;
-                
-                var touchstartHandler = function(e) {
-                    spinStore = -90;
-                    timerDing = 0;
-                    if (e.touches.length != 1) return;
-                    lastTouchY = e.touches[0].clientY;
-                    startTouchY = e.touches[0].clientY;
-                }
-                
-                var touchmoveHandler = function(e) {
-                    var touchY = e.touches[0].clientY;
-                    var touchYDelta = touchY - lastTouchY;
-                    lastTouchY = touchY;
-                    endTouchY = e.touches[0].clientY;
-                    if (document.getElementById('{{container}}').scrollTop == 0) {
-                        dragStore = endTouchY - startTouchY;
-                        spinStore = spinStore - (dragStore / {{distance}});
-                        desat = 100 - ((dragStore / {{distance}}) * 100);
-                        element.desat = desat;
-                        element.drag = dragStore;
-                        element.spin = spinStore;
-                    }
-                    if (document.getElementById('{{container}}').scrollTop == 0 && touchYDelta > 0) {
-                        e.preventDefault();
-                        return;
-                    }
-                    if (document.getElementById('{{container}}').scrollTop == 0 && dragStore > 0) {
-                        e.preventDefault();
-                        return;
-                    }
-                } 
-               
-                var touchendHandler = function(e) {
-                    if (document.getElementById('{{container}}').scrollTop == 0 && dragStore >= {{distance}}) {
-                        bounceToDistance();
-                    } else {
-                        bounceToZero();
-                    }
-                }
-                
-                document.addEventListener('touchstart', touchstartHandler, false);
-                document.addEventListener('touchmove', touchmoveHandler, false);
-                document.addEventListener('touchend', touchendHandler, false);
-            });
-        </script>
+		</style>
+
+		<paper-shadow class="refreshShadow" z="2">
+			<core-icon class="refreshIcon" icon="icons:refresh"></core-icon>
+		</paper-shadow>
+
+		<script type="text/javascript">
+
+			var dragStore = 0,
+				spinStore = -90,
+				scaleStore = 1,
+				timerDing = 0;
+
+			var element = document.querySelector("pull-to-action");
+
+			function spinTimer() {
+				if (timerDing == 0) {
+					spinStore = spinStore + 2;
+					setTimeout( function() {
+						element.spin = spinStore;
+						spinTimer();
+					},1);
+				}
+			}
+
+			function bounceToDistance() {
+				if (dragStore > 150) {
+					dragStore = dragStore - 4;
+					spinStore = spinStore + 4;
+					setTimeout(function() {
+						element.drag = dragStore;
+						element.spin = spinStore;
+						bounceToDistance();
+					},1);          
+				} else {
+					{{action}};
+					setTimeout( function() {
+						scaleAway();
+					}, 1000);
+					spinTimer();
+				}			
+			}
+
+			function scaleAway() {
+				if (scaleStore > 0) {
+					scaleStore = scaleStore - 0.01;
+					setTimeout( function() {
+						element.scale = scaleStore; 
+						scaleAway();
+					},1);          
+				} else {
+					dragStore = 0;
+					spinStore = -90;
+					scaleStore = 1;
+					timerDing++;
+					element.drag = dragStore;
+					element.spin = spinStore;
+					element.scale = scaleStore;
+					setTimeout( function() {
+						timerDing = 0;
+					},1);
+				}			
+			}
+			function bounceToZero() {
+				if (dragStore > 0) {
+					dragStore--;
+					spinStore--;
+					setTimeout( function() {
+						element.drag = dragStore;
+						element.spin = spinStore;
+						bounceToZero();
+					},5);          
+				}   
+			}
+			window.addEventListener('load', function() {
+				var lastTouchY = 0;
+				var startTouchY = 0;
+				var endTouchY = 0;
+				var desat = 100;
+
+				var touchstartHandler = function(e) {
+					spinStore = -90;
+					timerDing = 0;
+					if (e.touches.length != 1) return;
+					lastTouchY = e.touches[0].clientY;
+					startTouchY = e.touches[0].clientY;
+				}
+
+				var touchmoveHandler = function(e) {
+					var touchY = e.touches[0].clientY;
+					var touchYDelta = touchY - lastTouchY;
+					lastTouchY = touchY;
+					endTouchY = e.touches[0].clientY;
+					if (document.getElementById('{{container}}').scrollTop == 0) {
+						dragStore = endTouchY - startTouchY;
+						spinStore = spinStore - (dragStore / {{distance}});
+						desat = 100 - ((dragStore / {{distance}}) * 100);
+						element.desat = desat;
+						element.drag = dragStore;
+						element.spin = spinStore;
+					}
+					if (document.getElementById('{{container}}').scrollTop == 0 && touchYDelta > 0) {
+						e.preventDefault();
+						return;
+					}
+					if (document.getElementById('{{container}}').scrollTop == 0 && dragStore > 0) {
+						e.preventDefault();
+						return;
+					}
+				} 
+
+				var touchendHandler = function(e) {
+					if (document.getElementById('{{container}}').scrollTop == 0 && dragStore >= {{distance}}) {
+						bounceToDistance();
+					} else {
+						bounceToZero();
+					}
+				}
+
+				document.addEventListener('touchstart', touchstartHandler, false);
+				document.addEventListener('touchmove', touchmoveHandler, false);
+				document.addEventListener('touchend', touchendHandler, false);
+			});
+		</script>
 	</template>
+	
 	<script>
 		Polymer({
-			
+
 			/**
-              * The callback action that will be executed
-              * when the user releases the pull element
-              *
-              * @attribute action
-              * @type function
-              * @default alert("You need to set the action attribute")
-              */
+			* The callback action that will be executed
+			* when the user releases the pull element
+			*
+			* @attribute action
+			* @type function
+			* @default alert("You need to set the action attribute")
+			*/
 			action: 'alert("You need to set the action attribute")',
-			
+
 			/**
-              * The max distance till when the refresh icon
-              * can be pulled to
-              *
-              * @attribute distance
-              * @type integer
-              * @default 100
-              */
+			* The max distance till when the refresh icon
+			* can be pulled to
+			*
+			* @attribute distance
+			* @type integer
+			* @default 100
+			*/
 			distance: '100',
-			
+
 			/**
-              * The default container to which the pull-to-action
-              * element will bind to
-              *
-              * @attribute container
-              * @type string
-              * @default 'body'
-              */
+			* The default container to which the pull-to-action
+			* element will bind to
+			*
+			* @attribute container
+			* @type string
+			* @default 'body'
+			*/
 			container: 'body',
-			
+
 			/**
-              * The default color in which the refresh icon will 
-              * be displayed
-              *
-              * @attribute color
-              * @type string
-              * @default '#ccc'
-              */
+			* The default color in which the refresh icon will 
+			* be displayed
+			*
+			* @attribute color
+			* @type string
+			* @default '#ccc'
+			*/
 			color: '#ccc',
-			
+
 			/**
-              * Other variables
-              *
-              */
+			* Other variables
+			*
+			*/
 			drag: '0',
 			desat: '100',
 			spin: '-90',
