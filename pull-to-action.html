@@ -34,6 +34,9 @@
             filter: grayscale({{desat}}%);
             -webkit-filter: grayscale({{desat}}%);
         }
+            paper-spinner {
+                z-index: 90;
+            }
         </style>
         
 		<paper-shadow class="refreshShadow" z="2">
@@ -161,14 +164,56 @@
 	</template>
 	<script>
 		Polymer({
+            
+            /**
+              * The callback action that will be executed
+              * when the user releases the pull element
+              *
+              * @attribute action
+              * @type function
+              * @default alert("You need to set the action attribute")
+              */
 			action: 'alert("You need to set the action attribute")',
+            
+            /**
+              * The max distance till when the refresh icon
+              * can be pulled to
+              *
+              * @attribute distance
+              * @type integer
+              * @default 100
+              */
 			distance: '100',
+            
+            /**
+              * The default container to which the pull-to-action
+              * element will bind to
+              *
+              * @attribute container
+              * @type string
+              * @default 'body'
+              */
 			container: 'body',
+            
+            /**
+              * The default color in which the refresh icon will 
+              * be displayed
+              *
+              * @attribute color
+              * @type string
+              * @default '#ccc'
+              */
+            color: '#ccc',
+            
+            /**
+              * Other variables
+              *
+              */
 			drag: '0',
 			desat: '100',
 			spin: '-90',
-			scale: '1',
-			color: '#ccc'
+			scale: '1'
+			
 		});
 	</script>
 </polymer-element>
