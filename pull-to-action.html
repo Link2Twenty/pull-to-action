@@ -7,34 +7,34 @@
 <polymer-element attributes="action distance container color" name="pull-to-action">
     <template>
         <style>
-        :host {
-            display:block;
-            position: absolute;
-            text-align:center;
-            z-index:99;
-            width: 100%;
-        }
-        .refreshShadow {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            top: calc(({{drag}}px - 50px) / 3);
-            opacity: calc({{drag}} / {{distance}});
-            margin: 0 auto;
-            transform: scale({{scale}});
-        }
-        .refreshIcon {
-            width: 32px;
-            height: 32px;
-            background-color:white;
-            border-radius: 50%;
-            border: 1px solid {{color}};
-            color: {{color}};
-            transform: rotate({{spin}}deg);
-            filter: grayscale({{desat}}%);
-            -webkit-filter: grayscale({{desat}}%);
-        }
-            paper-spinner {
+			:host {
+				display:block;
+				position: absolute;
+				text-align:center;
+				z-index:99;
+				width: 100%;
+			}
+			.refreshShadow {
+				width: 32px;
+				height: 32px;
+				border-radius: 50%;
+				top: calc(({{drag}}px - 50px) / 3);
+				opacity: calc({{drag}} / {{distance}});
+				margin: 0 auto;
+				transform: scale({{scale}});
+			}
+			.refreshIcon {
+				width: 32px;
+				height: 32px;
+				background-color:white;
+				border-radius: 50%;
+				border: 1px solid {{color}};
+				color: {{color}};
+				transform: rotate({{spin}}deg);
+				filter: grayscale({{desat}}%);
+				-webkit-filter: grayscale({{desat}}%);
+			}
+			paper-spinner {
                 z-index: 90;
             }
         </style>
@@ -164,8 +164,8 @@
 	</template>
 	<script>
 		Polymer({
-            
-            /**
+			
+			/**
               * The callback action that will be executed
               * when the user releases the pull element
               *
@@ -174,8 +174,8 @@
               * @default alert("You need to set the action attribute")
               */
 			action: 'alert("You need to set the action attribute")',
-            
-            /**
+			
+			/**
               * The max distance till when the refresh icon
               * can be pulled to
               *
@@ -184,8 +184,8 @@
               * @default 100
               */
 			distance: '100',
-            
-            /**
+			
+			/**
               * The default container to which the pull-to-action
               * element will bind to
               *
@@ -194,8 +194,8 @@
               * @default 'body'
               */
 			container: 'body',
-            
-            /**
+			
+			/**
               * The default color in which the refresh icon will 
               * be displayed
               *
@@ -203,9 +203,9 @@
               * @type string
               * @default '#ccc'
               */
-            color: '#ccc',
-            
-            /**
+			color: '#ccc',
+			
+			/**
               * Other variables
               *
               */
@@ -213,7 +213,6 @@
 			desat: '100',
 			spin: '-90',
 			scale: '1'
-			
 		});
 	</script>
 </polymer-element>
