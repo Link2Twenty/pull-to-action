@@ -45,6 +45,14 @@ Now with very little code we have made a simple red spinning icon to reload the 
 
 ![example image](http://s8.postimg.org/9d6yced8l/example.png)
 
+#### Running Unit Tests
+
+Make sure that you have `wct` installed on your local machine. To get more details about `wct`, please look into the [Unit Testing Polymer Elements](https://www.polymer-project.org/0.5/articles/unit-testing-elements.html) article.
+
+- The unit tests for `pull-to-action` element is in the test folder. You can run the tests by typing the command `wct` from the root folder of the project. 
+- To add or remove browsers that needs to be tested, look into `wct.conf.js` file. 
+- You can add more test cases in `test/pull-to-action-tests.js`
+
 #### What you can make
 
 Here is a little example of what it can look like baked into a real app
