@@ -3,7 +3,6 @@
 <link rel="import" href="../paper-shadow/paper-shadow.html">
 <link rel="import" href="../core-icon/core-icon.html">
 
-
 <polymer-element attributes="action distance container color" name="pull-to-action">
 	<template>
 		<style>
@@ -85,7 +84,7 @@
 						element.drag = dragStore;
 						element.spin = spinStore;
 						bounceToDistance();
-					},1);          
+					},1);
 				} else {
 					{{action}};
 					if(typeof actionTrigger === "undefined"){
@@ -114,10 +113,7 @@
 					element.drag = dragStore;
 					element.spin = spinStore;
 					element.scale = scaleStore;
-					setTimeout( function() {
-						timerDing = 0;
-					},1);
-				}			
+				}
 			}
 			function bounceToZero() {
 				if (dragStore > 0) {
@@ -127,8 +123,8 @@
 						element.drag = dragStore;
 						element.spin = spinStore;
 						bounceToZero();
-					},5);          
-				}   
+					},5);
+				}
 			}
 			window.addEventListener('load', function() {
 				var lastTouchY = 0;
