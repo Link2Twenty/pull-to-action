@@ -3,7 +3,7 @@
 <link rel="import" href="../paper-shadow/paper-shadow.html">
 <link rel="import" href="../core-icon/core-icon.html">
 
-<polymer-element attributes="action distance container color" name="pull-to-action">
+<polymer-element attributes="action distance container color name" name="pull-to-action">
 	<template>
 		<style>
 			:host {
@@ -39,9 +39,10 @@
 		</style>
 
 		<paper-shadow class="refreshShadow" z="2">
-			<core-icon class="refreshIcon" icon="icons:refresh"></core-icon>
+			<core-icon id="{{name}}" class="refreshIcon" icon="icons:refresh"></core-icon>
 		</paper-shadow>
 
+		
 		<script type="text/javascript">
 
 			var dragStore = 0,
@@ -49,8 +50,11 @@
 				scaleStore = 1,
 				timerDing = 0;
 
-			var element = document.querySelector("pull-to-action");
-
+			var container = document.querySelectorAll('{{container}}')[0];
+			var deep = document.querySelectorAll('pull-to-action[name="{{name}}"]')[0].shadowRoot;
+			var element = document.querySelector('pull-to-action');
+			var refreshIcon = deep.querySelectorAll('#{{name}}')[0];
+			
 			function actionTimer() {
 			if (actionTrigger == 1) {
 				spinStore = spinStore + 2;
@@ -145,7 +149,7 @@
 					var touchYDelta = touchY - lastTouchY;
 					lastTouchY = touchY;
 					endTouchY = e.touches[0].clientY;
-					if (document.getElementById('{{container}}').scrollTop == 0) {
+					if (container.scrollTop == 0) {
 						dragStore = endTouchY - startTouchY;
 						spinStore = spinStore - (dragStore / {{distance}});
 						desat = 100 - ((dragStore / {{distance}}) * 100);
@@ -153,27 +157,40 @@
 						element.drag = dragStore;
 						element.spin = spinStore;
 					}
-					if (document.getElementById('{{container}}').scrollTop == 0 && touchYDelta > 0) {
+					if (container.scrollTop == 0 && touchYDelta > 0) {
 						e.preventDefault();
 						return;
 					}
-					if (document.getElementById('{{container}}').scrollTop == 0 && dragStore > 0) {
+					if (container.scrollTop == 0 && dragStore > 0) {
 						e.preventDefault();
 						return;
 					}
 				} 
 
 				var touchendHandler = function(e) {
-					if (document.getElementById('{{container}}').scrollTop == 0 && dragStore >= {{distance}}) {
+					if (container.scrollTop == 0 && dragStore >= {{distance}}) {
 						bounceToDistance();
 					} else {
 						bounceToZero();
+						alert(e.touches[0].target);
+					}
+				}
+				
+				var touchmoveDisable = function(e) {
+					var touchY = e.touches[0].clientY;
+					var touchYDelta = touchY - lastTouchY;
+					lastTouchY = touchY;
+					
+					if (document.querySelectorAll('body')[0].scrollTop == 0 && touchYDelta > 0) {
+						e.preventDefault();
+						return;
 					}
 				}
 
 				document.addEventListener('touchstart', touchstartHandler, false);
-				document.addEventListener('touchmove', touchmoveHandler, false);
+				container.addEventListener('touchmove', touchmoveHandler, false);
 				document.addEventListener('touchend', touchendHandler, false);
+				document.addEventListener('touchmove', touchmoveDisable, false);
 			});
 		</script>
 	</template>
@@ -211,6 +228,16 @@
 			*/
 			container: 'body',
 
+			/**
+			* The id of the specific pull-to-action instance
+			* used when multiple pull-to-action elements exist on one page
+			*
+			* @attribute id
+			* @type string
+			* @default 'none'
+			*/
+			name: 'none',
+			
 			/**
 			* The default color in which the refresh icon will 
 			* be displayed
