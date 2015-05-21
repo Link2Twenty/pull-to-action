@@ -165,13 +165,14 @@
 					endTouchY = e.touches[0].clientY;
 					
 					/** if you're at the top of the container, start animations **/
-					if (container.scrollTop == 0) {
+					if (container.scrollTop == 0 && scaleStore == 1) {
 						dragStore = endTouchY - startTouchY;
 						spinStore = spinStore - (dragStore / {{distance}});
 						desat = 100 - ((dragStore / {{distance}}) * 100);
 						element.desat = desat;
 						element.drag = dragStore;
 						element.spin = spinStore;
+						timerDing = 0;
 					}
 					
 					/** This is here to disable the standard pull to refresh  **/
@@ -214,7 +215,7 @@
 				}
 
 				/** listening for user input **/
-				document.addEventListener('touchstart', touchstartHandler, false);
+				container.addEventListener('touchstart', touchstartHandler, false);
 				container.addEventListener('touchmove', touchmoveHandler, false);
 				document.addEventListener('touchend', touchendHandler, false);
 				document.addEventListener('touchmove', touchmoveDisable, false);
@@ -245,7 +246,7 @@
 			*/
 			color: '#ccc',
 			
-						/**
+			/**
 			* The default container to which the pull-to-action
 			* element will bind to
 			*
@@ -267,9 +268,9 @@
 
 			/**
 			* The id of the specific pull-to-action instance
-			* used when multiple pull-to-action elements exist on one page
+			* used when multiple pull-to-action elements exist on one page (experimental)
 			*
-			* @attribute id
+			* @attribute name
 			* @type string
 			* @default 'none'
 			*/
