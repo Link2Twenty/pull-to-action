@@ -51,7 +51,7 @@
 			/** Shorthand variables **/
 			var container = document.querySelectorAll('{{container}}')[0];
 				deep = document.querySelectorAll('pull-to-action[name="{{name}}"]')[0].shadowRoot;
-				element = document.querySelector('pull-to-action');
+				element = document.querySelectorAll('pull-to-action[name="{{name}}"]')[0];
 				refreshIcon = deep.querySelectorAll('#{{name}}')[0];
 			
 			/** Picks up the actionTrigger hook place by Dev to control animations **/
