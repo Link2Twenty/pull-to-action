@@ -8,7 +8,8 @@
     "web-components"
   ],
   "authors": [
-    "Andrew Bone <AndrewB05@gmail.com>"
+    "Andrew Bone <AndrewB05@gmail.com>",
+    "Prateek Jadhwani <>"
   ],
   "license": "MIT",
   "homepage": "https://github.com/link2twenty/pull-to-action",
