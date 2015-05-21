@@ -3,7 +3,7 @@
 <link rel="import" href="../paper-shadow/paper-shadow.html">
 <link rel="import" href="../core-icon/core-icon.html">
 
-<polymer-element attributes="action distance container color name" name="pull-to-action">
+<polymer-element attributes="action color container distance name" name="pull-to-action">
 	<template>
 		<style>
 			:host {
@@ -27,49 +27,50 @@
 				height: 32px;
 				background-color:white;
 				border-radius: 50%;
-				border: 1px solid {{color}};
-				color: {{color}};
+				border-style:solid;
+				border-width: 2px;
 				transform: rotate({{spin}}deg);
 				filter: grayscale({{desat}}%);
 				-webkit-filter: grayscale({{desat}}%);
 			}
-			paper-spinner {
-				z-index: 90;
-			}
 		</style>
 
 		<paper-shadow class="refreshShadow" z="2">
-			<core-icon id="{{name}}" class="refreshIcon" icon="icons:refresh"></core-icon>
+			<core-icon id="{{name}}" style="border-color: {{color}};color: {{color}};" class="refreshIcon" icon="icons:refresh"></core-icon>
 		</paper-shadow>
 
 		
 		<script type="text/javascript">
 
+			/** Animation variables **/
 			var dragStore = 0,
 				spinStore = -90,
 				scaleStore = 1,
 				timerDing = 0;
 
+			/** Shorthand variables **/
 			var container = document.querySelectorAll('{{container}}')[0];
-			var deep = document.querySelectorAll('pull-to-action[name="{{name}}"]')[0].shadowRoot;
-			var element = document.querySelector('pull-to-action');
-			var refreshIcon = deep.querySelectorAll('#{{name}}')[0];
+				deep = document.querySelectorAll('pull-to-action[name="{{name}}"]')[0].shadowRoot;
+				element = document.querySelector('pull-to-action');
+				refreshIcon = deep.querySelectorAll('#{{name}}')[0];
 			
+			/** Picks up the actionTrigger hook place by Dev to control animations **/
 			function actionTimer() {
-			if (actionTrigger == 1) {
-				spinStore = spinStore + 2;
-				setTimeout( function() {
-					element.spin = spinStore;
-					actionTimer();
-				},1);
-			} else {
-				setTimeout( function() {
-					scaleAway();
-				}, 500);
-				spinTimer();
+				if (actionTrigger == 1) {
+					spinStore = spinStore + 2;
+					setTimeout( function() {
+						element.spin = spinStore;
+						actionTimer();
+						},1);
+				} else {
+					setTimeout( function() {
+						scaleAway();
+					}, 500);
+					spinTimer();
+				}
 			}
-		}
 			
+			/** Spins refreshIcon until timerDing is not equal to one **/
 			function spinTimer() {
 				if (timerDing == 0) {
 					spinStore = spinStore + 2;
@@ -80,6 +81,7 @@
 				}
 			}
 
+			/** Animates refreshIcon returning to the set Distance, then triggers Dev action **/
 			function bounceToDistance() {
 				if (dragStore > 150) {
 					dragStore = dragStore - 4;
@@ -91,6 +93,7 @@
 					},1);
 				} else {
 					{{action}};
+					/** If the Dev hasn't included the actionTrigger hook, fake the timing animation otherwise start actionTimer **/
 					if(typeof actionTrigger === "undefined"){
 						setTimeout( function() {
 							scaleAway();
@@ -102,6 +105,7 @@
 				}
 			}
 
+			/** Scale refreshIcon out of existence, and then reset the animation for next time **/
 			function scaleAway() {
 				if (scaleStore > 0) {
 					scaleStore = scaleStore - 0.01;
@@ -119,6 +123,8 @@
 					element.scale = scaleStore;
 				}
 			}
+			
+			/** Roll refreshIcon back up out of view **/
 			function bounceToZero() {
 				if (dragStore > 0) {
 					dragStore--;
@@ -130,12 +136,17 @@
 					},5);
 				}
 			}
+			
+			/** when the page is loaded **/
 			window.addEventListener('load', function() {
+				
+				/** touch location and saturation variables **/
 				var lastTouchY = 0;
-				var startTouchY = 0;
-				var endTouchY = 0;
-				var desat = 100;
+					startTouchY = 0;
+					endTouchY = 0;
+					desat = 100;
 
+				/** on touch start set starting touches and reseat animations in case missed. **/
 				var touchstartHandler = function(e) {
 					spinStore = -90;
 					timerDing = 0;
@@ -144,11 +155,16 @@
 					startTouchY = e.touches[0].clientY;
 				}
 
+				/** on touch move (within container) **/
 				var touchmoveHandler = function(e) {
+					
+					/** variables to set Y distance **/
 					var touchY = e.touches[0].clientY;
 					var touchYDelta = touchY - lastTouchY;
 					lastTouchY = touchY;
 					endTouchY = e.touches[0].clientY;
+					
+					/** if you're at the top of the container, start animations **/
 					if (container.scrollTop == 0) {
 						dragStore = endTouchY - startTouchY;
 						spinStore = spinStore - (dragStore / {{distance}});
@@ -157,36 +173,47 @@
 						element.drag = dragStore;
 						element.spin = spinStore;
 					}
+					
+					/** This is here to disable the standard pull to refresh  **/
 					if (container.scrollTop == 0 && touchYDelta > 0) {
 						e.preventDefault();
 						return;
 					}
-					if (container.scrollTop == 0 && dragStore > 0) {
+					
+					/** This stops you being able to scroll down the page while you manually put refreshIcon back **/
+					if (dragStore > 0) {
 						e.preventDefault();
 						return;
 					}
 				} 
 
+				/** on touch end **/
 				var touchendHandler = function(e) {
+					
+					/** if user has met desired distance start action chain otherwise hide refreshIcon **/
 					if (container.scrollTop == 0 && dragStore >= {{distance}}) {
 						bounceToDistance();
 					} else {
 						bounceToZero();
-						alert(e.touches[0].target);
 					}
 				}
 				
+				/** This is here to disable the standard pull to refresh **/
 				var touchmoveDisable = function(e) {
+					
+					/** calculates which way you're pulling **/
 					var touchY = e.touches[0].clientY;
 					var touchYDelta = touchY - lastTouchY;
 					lastTouchY = touchY;
 					
+					/** if you're at the top and still pulling down, do nothing **/
 					if (document.querySelectorAll('body')[0].scrollTop == 0 && touchYDelta > 0) {
 						e.preventDefault();
 						return;
 					}
 				}
 
+				/** listening for user input **/
 				document.addEventListener('touchstart', touchstartHandler, false);
 				container.addEventListener('touchmove', touchmoveHandler, false);
 				document.addEventListener('touchend', touchendHandler, false);
@@ -207,7 +234,27 @@
 			* @default alert("You need to set the action attribute")
 			*/
 			action: 'alert("You need to set the action attribute")',
-
+			
+			/**
+			* The default color in which the refresh icon will 
+			* be displayed
+			*
+			* @attribute color
+			* @type string
+			* @default '#ccc'
+			*/
+			color: '#ccc',
+			
+						/**
+			* The default container to which the pull-to-action
+			* element will bind to
+			*
+			* @attribute container
+			* @type string
+			* @default 'body'
+			*/
+			container: 'body',
+			
 			/**
 			* The distance until the refresh icon
 			* triggers action
@@ -219,16 +266,6 @@
 			distance: '100',
 
 			/**
-			* The default container to which the pull-to-action
-			* element will bind to
-			*
-			* @attribute container
-			* @type string
-			* @default 'body'
-			*/
-			container: 'body',
-
-			/**
 			* The id of the specific pull-to-action instance
 			* used when multiple pull-to-action elements exist on one page
 			*
@@ -237,26 +274,16 @@
 			* @default 'none'
 			*/
 			name: 'none',
-			
-			/**
-			* The default color in which the refresh icon will 
-			* be displayed
-			*
-			* @attribute color
-			* @type string
-			* @default '#ccc'
-			*/
-			color: '#ccc',
 
 			/**
 			* Other variables
 			* these are calculated by the JS
 			*
 			*/
-			drag: '0',
 			desat: '100',
-			spin: '-90',
-			scale: '1'
+			drag: '0',
+			scale: '1',
+			spin: '-90'
 		});
 	</script>
 </polymer-element>
