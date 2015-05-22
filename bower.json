@@ -1,6 +1,6 @@
 {
   "name": "pull-to-action",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "Trigger javaScript action on pulldown",
   "main": "pull-to-action.html",
   "keywords": [
