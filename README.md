@@ -57,7 +57,9 @@ Make sure that you have `wct` installed on your local machine. To get more detai
 #### What you can make
 
 Here is a little example of what it can look like baked into a real app
+
 ![Screenshot](http://gifyu.com/images/patch2.gif)
+
 
 I hope you get some good use out of this, and please don't feel embarrassed to submit bug reports, or pull requests.
 
