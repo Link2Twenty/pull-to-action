@@ -34,7 +34,7 @@ Now that you have imported it you can get to using it on your page
 ```html
 <body>
 <div id="scrollablecontainer">
-<pull-to-action name="PTAscrollablecontainer" action="location.reload()" color="red" container="scrollablecontainer"></pull-to-action>
+<pull-to-action name="PTAscrollablecontainer" action="location.reload()" color="red" container="#scrollablecontainer"></pull-to-action>
 <h1>So much content</h1>
 ... <br>
 ... <br>
