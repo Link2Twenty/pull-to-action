@@ -3,7 +3,7 @@
 <link rel="import" href="../bower_components/paper-shadow/paper-shadow.html">
 <link rel="import" href="../bower_components/core-icon/core-icon.html">
 
-<polymer-element attributes="action color container distance name" name="pull-to-action">
+<polymer-element attributes="action color container distance" name="pull-to-action">
 	<template>
 		<style>
 			:host {
@@ -36,7 +36,7 @@
 		</style>
 
 		<paper-shadow class="refreshShadow" z="2">
-			<core-icon id="{{name}}" style="border-color: {{color}};color: {{color}};" class="refreshIcon" icon="icons:refresh"></core-icon>
+			<core-icon style="border-color: {{color}};color: {{color}};" class="refreshIcon" icon="icons:refresh"></core-icon>
 		</paper-shadow>
 	</template>
 	
@@ -82,16 +82,6 @@
 			* @default 100
 			*/
 			distance: '100',
-
-			/**
-			* The id of the specific pull-to-action instance
-			* used when multiple pull-to-action elements exist on one page
-			*
-			* @attribute id
-			* @type string
-			* @default 'none'
-			*/
-			name: 'none',
 
 			/**
 			* Other variables
