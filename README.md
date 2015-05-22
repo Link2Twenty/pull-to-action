@@ -10,7 +10,6 @@ This polymer element performs a "pull to refresh" animation with a callback to t
 | color | Sets color of the refresh icon | #ccc |
 | container | the container element (if identifing with id start with # and . for class) | body |
 | distance | How far the user has to drag the screen | 100 |
-| name* | this identifies the element and must be included | none |
 required*
 
 ## Install with bower
@@ -34,7 +33,7 @@ Now that you have imported it you can get to using it on your page
 ```html
 <body>
 <div id="scrollablecontainer">
-<pull-to-action name="PTAscrollablecontainer" action="location.reload()" color="red" container="#scrollablecontainer"></pull-to-action>
+<pull-to-action action="location.reload()" color="red" container="#scrollablecontainer"></pull-to-action>
 <h1>So much content</h1>
 ... <br>
 ... <br>
