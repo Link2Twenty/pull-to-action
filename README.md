@@ -1,8 +1,22 @@
 # pull-to-action
+## What is it?
+"pull-to-action" is a polymer element to perform a pull to refresh like animation and action within web apps.
 
-This polymer element performs a "pull to refresh" animation with a callback to the action that needs to be performed when a user pulls down the screen from the top.
+Before we get started here is a little example of what it can look like baked into a real app
 
-## Attributes
+![Screenshot](http://gifyu.com/images/patch2.gif)
+
+## Getting started
+
+### Install with bower
+
+First you need bower, [see their site](http://bower.io/) for details 
+
+```
+bower install --save pull-to-action
+```
+
+### Attributes
 
 | Attribute Name | Description | Default |
 |----------------|-------------|-------------|
@@ -11,14 +25,6 @@ This polymer element performs a "pull to refresh" animation with a callback to t
 | container | the container element (if identifing with id start with # and . for class) | body |
 | distance | How far the user has to drag the screen | 100 |
 required*
-
-## Install with bower
-
-First you need bower, [see their site](http://bower.io/) for details 
-
-```
-bower install --save pull-to-action
-```
 
 ### How to use
 
@@ -46,7 +52,7 @@ Now with very little code we have made a simple red spinning icon to reload the 
 
 ![example image](http://s8.postimg.org/9d6yced8l/example.png)
 
-#### Running Unit Tests
+##### Running Unit Tests
 
 Make sure that you have `wct` installed on your local machine. To get more details about `wct`, please look into the [Unit Testing Polymer Elements](https://www.polymer-project.org/0.5/articles/unit-testing-elements.html) article.
 
@@ -54,17 +60,8 @@ Make sure that you have `wct` installed on your local machine. To get more detai
 - To add or remove browsers that needs to be tested, look into `wct.conf.js` file. 
 - You can add more test cases in `test/pull-to-action-tests.js`
 
-#### What you can make
-
-Here is a little example of what it can look like baked into a real app
-
-![Screenshot](http://gifyu.com/images/patch2.gif)
-
-
-I hope you get some good use out of this, and please don't feel embarrassed to submit bug reports, or pull requests.
-
-# Advanced
-## Using the actionTimer hook
+## Advanced
+### Using the actionTimer hook
 The actionTimer hook is in place to get the element to keep spinning while you load in your data, it is not needed but makes the app seem more responsive. I will show you a test app twice, once with the hook implemented and once without.
 
 We will be using promises if you don't know what they are or aren't confident with them there is a nice little guide [here](http://www.sitepoint.com/overview-javascript-promises/).
@@ -154,5 +151,5 @@ The code is quite a bit shorter but no matter how long it take to load the data 
 
 ![Screenshot](http://gifyu.com/images/withoutactionToggle.gif)
 
-### Conclusion
+## Conclusion
 If you don't feel confident using promises pull-to-action will work fine without them, but if you know how to use them, or even if you want to learn how to use them, it makes a huge difference to the aesthetics of your app.
