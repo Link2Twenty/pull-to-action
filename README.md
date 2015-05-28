@@ -18,7 +18,7 @@ bower install --save pull-to-action
 
 ### Attributes
 
-| Attribute Name | Description | Default |
+| Attribute Name | Functionality | Default |
 |----------------|-------------|-------------|
 | action* | A callback function that for which action should be performed | alert("You need to set the action attribute") |
 | color | Sets color of the refresh icon | #ccc |
