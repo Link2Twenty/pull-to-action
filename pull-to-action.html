@@ -12,7 +12,7 @@
 			width: 100%;
 		}
 		iron-icon {
-			display: inline;
+			display: block;
 			--iron-icon-width: 32px;
 			--iron-icon-height: 34px;
 			background-color:white;
@@ -26,6 +26,7 @@
 				height: 32px;
 				border-radius: 50%;
 				margin: 0 auto;
+				will-change: transform;
 			}
 		</style>
 		<script>
@@ -261,7 +262,9 @@
 						/** if you're at the top of the container, start animations **/
 						if (container.scrollTop == 0 && scaleStore == 1) {
 							dragStore = endTouchY - startTouchY;
+							//console.log(dragStore);
 							spinStore = spinStore - (dragStore / distance);
+							console.log(spinStore);
 							desatStore = 100 - ((dragStore / distance) * 100);
 							attribute.drag = dragStore;
 							attribute.spin = spinStore;
@@ -302,9 +305,9 @@
 					refreshShadow.style.top = (this.drag - 50) / 3 + 'px';
 					refreshShadow.style.opacity = this.drag / this.distance;
 					refreshShadow.style.transform = 'scale(' + this.scale + ')';
-					
+
 					var refreshIcon = document.querySelector('.refreshIcon');
-					refreshIcon.style.transform = 'rotate(' + this.spin + 'deg)';
+					refreshIcon.style.transform = 'rotateZ(' + this.spin + 'deg)';
 					refreshIcon.style.filter = 'grayscale(' + this.desat + '%)';
 				}
 			});
