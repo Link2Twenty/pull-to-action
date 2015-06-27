@@ -103,7 +103,8 @@
 					*/
 					distance: {
 						value: 100,
-						notify: true
+						notify: true,
+						observer: 'updateStyles'
 					},
 					/**
 					* Other variables
@@ -112,17 +113,21 @@
 					*/
 					desat: {
 						type: String,
-						value: '100'
+						value: '100',
+						observer: 'updateStyles'
 					},
 					drag: {
 						type: Number,
-						value: 0
+						value: 0,
+						observer: 'updateStyles'
 					},
 					scale: {
-						value: 1
+						value: 1,
+						observer: 'updateStyles'
 					},
 					spin: {
-						value: -90
+						value: -90,
+						observer: 'updateStyles'
 					}
 
 				},
@@ -230,9 +235,9 @@
 					}
 
 					/** touch location and saturation variables **/
-					var lastTouchY = 0;
-						startTouchY = 0;
-						endTouchY = 0;
+					var lastTouchY = 0,
+						startTouchY = 0,
+						endTouchY = 0,
 						desatStore = 100;
 
 					/** on touch start set starting touches and reseat animations in case missed. **/
