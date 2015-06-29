@@ -1,6 +1,6 @@
-<link rel="import" href="../bower_components/paper-material/paper-material.html" />
-<link rel="import" href="../bower_components/iron-icons/iron-icons.html" />
-<link rel="import" href="../bower_components/iron-icon/iron-icon.html" />
+<link rel="import" href="../paper-material/paper-material.html" />
+<link rel="import" href="../iron-icons/iron-icons.html" />
+<link rel="import" href="../iron-icon/iron-icon.html" />
 
 <dom-module id="pull-to-action">
 	<style>
@@ -14,7 +14,7 @@
 		iron-icon {
 			display: block;
 			--iron-icon-width: 32px;
-			--iron-icon-height: 34px;
+			--iron-icon-height: 32px;
 			background-color:white;
 			border-radius: 50%;
 		}
@@ -47,7 +47,7 @@
 			document.addEventListener('touchmove', touchmoveDisable, false);
 		</script>
 		<paper-material class="refreshShadow" elevation="2">
-			<iron-icon style="border-color: {{color}};color: {{color}};" class="refreshIcon" icon="refresh"></iron-icon>
+			<iron-icon class="refreshIcon" icon="refresh"></iron-icon>
 		</paper-material>
 	</template>
 	<script>
@@ -138,6 +138,8 @@
 				*
 				*/
 				ready: function() {
+					Polymer.dom(this.root).querySelector('.refreshIcon').style.fill = this.color;
+				
 					var dragStore = 0,
 						spinStore = -90,
 						scaleStore = 1,
