@@ -1,4 +1,5 @@
 <link rel="import" href="../paper-material/paper-material.html" />
+<link rel="import" href="../paper-spinner/paper-spinner.html" />
 <link rel="import" href="../iron-icons/iron-icons.html" />
 <link rel="import" href="../iron-icon/iron-icon.html" />
 
@@ -15,8 +16,43 @@
 			display: block;
 			--iron-icon-width: 32px;
 			--iron-icon-height: 32px;
+		}
+		.refresh {
+			width: 32px;
+			height: 32px;
 			background-color:white;
 			border-radius: 50%;
+			border-width: 0px;
+		}
+		.refreshSpinner {
+			padding:5px;
+			width: 22px;
+			height: 22px;
+		}
+		.hidden {
+			display: none;
+		}
+		.scale {
+			-webkit-animation: scaleAway 0.5s;
+			-moz-animation: scaleAway 0.5s;
+			-o-animation: scaleAway 0.5s;
+			animation: scaleAway 0.5s;
+		}
+		@-webkit-keyframes scaleAway {
+			0% {transform: scale(1);}
+			100% {transform: scale(0);}
+		}
+		@-moz-keyframes scaleAway {
+			0% {transform: scale(1);}
+			100% {transform: scale(0);}
+		}
+		@-o-keyframes scaleAway {
+			0% {transform: scale(1);}
+			100% {transform: scale(0);}
+		}
+		@keyframes scaleAway {
+			0% {transform: scale(1);}
+			100% {transform: scale(0);}
 		}
 	</style>
 	<template>
@@ -47,7 +83,10 @@
 			document.addEventListener('touchmove', touchmoveDisable, false);
 		</script>
 		<paper-material class="refreshShadow" elevation="2">
-			<iron-icon class="refreshIcon" icon="refresh"></iron-icon>
+			<div class="refresh">
+				<iron-icon class="refreshIcon" icon="refresh"></iron-icon>
+			</div>
+			<paper-spinner class="refresh refreshSpinner hidden"></paper-spinner>
 		</paper-material>
 	</template>
 	<script>
@@ -122,10 +161,6 @@
 						value: 0,
 						observer: 'updateStyles'
 					},
-					scale: {
-						value: 1,
-						observer: 'updateStyles'
-					},
 					spin: {
 						value: -90,
 						observer: 'updateStyles'
@@ -139,11 +174,14 @@
 				*/
 				ready: function() {
 					Polymer.dom(this.root).querySelector('.refreshIcon').style.fill = this.color;
-				
+					
+					var refreshShadow = Polymer.dom(this.root).querySelector('.refreshShadow'),
+						refreshIcon = Polymer.dom(this.root).querySelector('.refreshIcon'),
+						refresh = Polymer.dom(this.root).querySelector('.refresh'),
+						refreshSpinner = Polymer.dom(this.root).querySelector('.refreshSpinner');
+					
 					var dragStore = 0,
 						spinStore = -90,
-						scaleStore = 1,
-						timerDing = 0,
 						distance = this.distance,
 						action = this.action;
 
@@ -156,34 +194,37 @@
 
 					/** Picks up the actionTrigger hook place by Dev to control animations **/
 					function actionTimer() {
-						if (actionTrigger == 1) {
-							spinStore = spinStore + 2;
-							setTimeout( function() {
+						if(spinStore.toFixed(0) % 360 == 270) {
+							if (actionTrigger === 1) {
+								refresh.classList.add("hidden");
+								refreshSpinner.classList.remove("hidden");
+								refreshSpinner.setAttribute("active","");
+								actionTimerEnd();
+							} else {
+								actionTimerEnd();
+							}
+						} else {
+							spinStore++;
+							setTimeout(function() {
 								attribute.spin = spinStore;
 								actionTimer();
-								},1);
-						} else {
-							setTimeout( function() {
-								scaleAway();
-							}, 500);
-							spinTimer();
-						}
-					}
-
-					/** Spins refreshIcon until timerDing is not equal to one **/
-					function spinTimer() {
-						if (timerDing == 0) {
-							spinStore = spinStore + 2;
-							setTimeout( function() {
-								attribute.spin = spinStore;
-								spinTimer();
 							},1);
+						}
+					}		
+					
+					function actionTimerEnd() {
+						if (actionTrigger == 1) {
+							setTimeout( function() {
+								actionTimerEnd();
+							}, 1000);
+						} else {
+							scaleAway();
 						}
 					}
 
 					/** Animates refreshIcon returning to the set Distance, then triggers Dev action **/
 					function bounceToDistance() {
-						if (dragStore > 150) {
+						if (dragStore > distance) {
 							dragStore = dragStore - 4;
 							spinStore = spinStore + 4;
 							setTimeout(function() {
@@ -198,7 +239,9 @@
 								setTimeout( function() {
 									scaleAway();
 								}, 1000);
-								spinTimer();
+								refresh.classList.add("hidden");
+								refreshSpinner.classList.remove("hidden");
+								refreshSpinner.setAttribute("active","");
 							} else {
 								actionTimer();
 							}
@@ -207,21 +250,13 @@
 
 					/** Scale refreshIcon out of existence, and then reset the animation for next time **/
 					function scaleAway() {
-						if (scaleStore > 0) {
-							scaleStore = scaleStore - 0.01;
-							setTimeout( function() {
-								attribute.scale = scaleStore;
-								scaleAway();
-							},1);
-						} else {
+						refreshShadow.classList.add("scale");
+						setTimeout( function() {
 							dragStore = 0;
-							spinStore = -90;
-							scaleStore = 1;
-							timerDing++;
 							attribute.drag = dragStore;
-							attribute.spin = spinStore;
-							attribute.scale = scaleStore;
-						}
+							refreshShadow.classList.remove("scale");
+							refreshSpinner.removeAttribute("active");
+						},500);          
 					}
 
 					/** Roll refreshIcon back up out of view **/
@@ -245,8 +280,9 @@
 
 					/** on touch start set starting touches and reseat animations in case missed. **/
 					var touchstartHandler = function(e) {
+						refresh.classList.remove("hidden");
+						refreshSpinner.classList.add("hidden");
 						spinStore = -90;
-						timerDing = 0;
 						attribute.spin = spinStore;
 						if (e.touches.length != 1) return;
 						lastTouchY = e.touches[0].clientY;
@@ -262,14 +298,13 @@
 						endTouchY = e.touches[0].clientY;
 
 						/** if you're at the top of the container, start animations **/
-						if (container.scrollTop == 0 && scaleStore == 1) {
+						if (container.scrollTop == 0) {
 							dragStore = endTouchY - startTouchY;
 							spinStore = spinStore - (dragStore / distance);
 							desatStore = 100 - ((dragStore / distance) * 100);
 							attribute.drag = dragStore;
 							attribute.spin = spinStore;
 							attribute.desat = desatStore;
-							timerDing = 0;
 						}
 
 						/** This is here to disable the standard pull to refresh  **/
