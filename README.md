@@ -4,7 +4,7 @@
 
 Before we get started here is a little example of what it can look like baked into a real app
 
-![Screenshot](http://gifyu.com/images/patch2.gif)
+![Screenshot](http://s1.postimg.org/z5h53bjzz/style.gif)
 
 ## Getting started
 
