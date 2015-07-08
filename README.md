@@ -4,7 +4,7 @@
 
 Before we get started here is a little example of what it can look like baked into a real app
 
-![Screenshot](http://gifyu.com/images/patch2.gif)
+![Screenshot](http://s1.postimg.org/z5h53bjzz/style.gif)
 
 ## Getting started
 
@@ -50,7 +50,7 @@ Now that you have imported it you can get to using it on your page
 
 Now with very little code we have made a simple red spinning icon to reload the page, in this instance it reload the whole URL but you could easily have a JS function to generate some JSON to repopulate the page, creating a seamless app like experience.
 
-![example image](http://s8.postimg.org/9d6yced8l/example.png)
+![example image](http://s30.postimg.org/ok5mf53dd/simple.gif)
 
 ##### Running Unit Tests
 
