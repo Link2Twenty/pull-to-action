@@ -324,6 +324,7 @@
 				/** on touch end **/
 				var touchendHandler = function(e) {
 					/** if user has met desired distance start action chain otherwise hide refreshIcon **/
+					refreshSpinner.querySelector('#spinnerContainer').classList.remove("cooldown");
 					if (container.scrollTop == 0 && dragStore >= distance) {
 						bounceToDistance();
 					} else {
