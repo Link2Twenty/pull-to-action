@@ -169,6 +169,7 @@
 			*
 			*/
 			ready: function() {
+        /** Picks up the actionTrigger hook place by Dev to control animations **/
 				function actionTimer(){
           spinStore.toFixed(0)%360==270?1===actionTrigger?(refresh.classList.add("hidden"),
           refreshSpinner.classList.remove("hidden"),
@@ -177,17 +178,19 @@
             attribute.spin=spinStore,
             actionTimer()
           },1))
-        }
+        }   
         function actionTimerEnd(){
           1==actionTrigger?setTimeout(function(){
             actionTimerEnd()},1e3):scaleAway()
         }
+        /** Animates refreshIcon returning to the set Distance, then triggers Dev action **/
         function bounceToDistance(){
           dragStore>distance?(dragStore-=4,spinStore+=4,setTimeout(function(){
             attribute.drag=dragStore,
             attribute.spin=spinStore,
             bounceToDistance()
           },1)):(eval(action),
+          /** If the Dev hasn't included the actionTrigger hook, fake the timing animation otherwise start actionTimer **/
           "undefined"==typeof actionTrigger?(setTimeout(function(){
             scaleAway()
           },1e3),
@@ -195,6 +198,7 @@
           refreshSpinner.classList.remove("hidden"),
           refreshSpinner.setAttribute("active","")):actionTimer())
         }
+        /** Scale refreshIcon out of existence, and then reset the animation for next time **/
         function scaleAway(){
           refreshShadow.classList.add("scale"),
           setTimeout(function(){
@@ -204,6 +208,7 @@
             refreshSpinner.removeAttribute("active")
           },500)
         }
+        /** Roll refreshIcon back up out of view **/
         function bounceToZero(){
           dragStore>0&&(dragStore--,spinStore--,setTimeout(function(){
             attribute.drag=dragStore,
@@ -224,10 +229,12 @@
         var attribute=this,
         container=document.querySelectorAll(attribute.container)[0],
         refreshIcon=attribute.querySelectorAll("iron-icon")[0],
+        /** touch location and saturation variables **/
         lastTouchY=0,
         startTouchY=0,
         endTouchY=0,
         desatStore=100,
+        /** on touch start set starting touches and reseat animations in case missed. **/
         touchstartHandler=function(e){
           refresh.classList.remove("hidden"),
           refreshSpinner.classList.add("hidden"),
@@ -235,6 +242,7 @@
           attribute.spin=spinStore,
           1==e.touches.length&&(lastTouchY=e.touches[0].clientY,startTouchY=e.touches[0].clientY)
         },
+        /** on touch move (within container) **/
         touchmoveHandler=function(e){
           var t=e.touches[0].clientY,r=t-lastTouchY;return lastTouchY=t,
           endTouchY=e.touches[0].clientY,
@@ -244,10 +252,13 @@
           attribute.drag=dragStore,
           attribute.spin=spinStore,
           attribute.desat=desatStore),
+          /** if you're at the top of the container, start animations **/
           0==container.scrollTop&&r>0?void e.preventDefault():dragStore>0?void e.preventDefault():void 0
         },
+        /** on touch end **/
         touchendHandler=function(){
           refreshSpinner.querySelector("#spinnerContainer").classList.remove("cooldown"),
+          /** if user has met desired distance start action chain otherwise hide refreshIcon **/
           0==container.scrollTop&&dragStore>=distance?bounceToDistance():bounceToZero()
         };
         container.addEventListener("touchstart",touchstartHandler,!1),
