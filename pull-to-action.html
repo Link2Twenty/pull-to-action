@@ -5,55 +5,55 @@
 
 <dom-module id="pull-to-action">
 	<style>
-		:host {
-			display:block;
-			position: absolute;
-			text-align:center;
-			z-index:99;
-			width: 100%;
-		}
-		iron-icon {
-			display: block;
-			--iron-icon-width: 32px;
-			--iron-icon-height: 32px;
-		}
-		.refresh {
-			width: 32px;
-			height: 32px;
-			background-color:white;
-			border-radius: 50%;
-			border-width: 0px;
-		}
-		.refreshSpinner {
-			padding:5px;
-			width: 22px;
-			height: 22px;
-		}
-		.hidden {
-			display: none;
-		}
-		.scale {
-			-webkit-animation: scaleAway 0.5s;
-			-moz-animation: scaleAway 0.5s;
-			-o-animation: scaleAway 0.5s;
-			animation: scaleAway 0.5s;
-		}
-		@-webkit-keyframes scaleAway {
-			0% {transform: scale(1);}
-			100% {transform: scale(0);}
-		}
-		@-moz-keyframes scaleAway {
-			0% {transform: scale(1);}
-			100% {transform: scale(0);}
-		}
-		@-o-keyframes scaleAway {
-			0% {transform: scale(1);}
-			100% {transform: scale(0);}
-		}
-		@keyframes scaleAway {
-			0% {transform: scale(1);}
-			100% {transform: scale(0);}
-		}
+    :host {
+      display:block;
+      position:absolute;
+      text-align:center;
+      z-index:99;
+      width:100%
+    }
+    iron-icon {
+      display:block;
+      --iron-icon-width:32px;
+      --iron-icon-height:32px
+    }
+    .refresh {
+      width:32px;
+      height:32px;
+      background-color:#fff;
+      border-radius:50%;
+      border-width:0
+    }
+    .refreshSpinner {
+      padding:5px;
+      width:22px;
+      height:22px
+    }
+    .hidden {
+      display:none
+    }
+    .scale {
+      -webkit-animation:scaleAway .5s;
+      -moz-animation:scaleAway .5s;
+      -o-animation:scaleAway .5s;
+      animation:scaleAway .5s
+    }
+    @-webkit-keyframes scaleAway {
+      0% {transform:scale(1)}
+      100% {transform:scale(0)}
+    }
+    @-moz-keyframes scaleAway {
+      0% {transform:scale(1)}
+      100% {transform:scale(0)}
+    }
+    @-o-keyframes scaleAway {
+      0% {transform:scale(1)}
+      100% {transform:scale(0)}
+    }
+    @keyframes scaleAway {
+      0% {transform:scale(1)}
+      100% {transform:scale(0)}
+    }
 	</style>
 	<template>
 		<style>
@@ -66,21 +66,16 @@
 			}
 		</style>
 		<script>
-			var lastTouchY = 0;
-			var touchmoveDisable = function(e) {
-
-				/** calculates which way you're pulling **/
-				var touchY = e.touches[0].clientY;
-				var touchYDelta = touchY - lastTouchY;
-				lastTouchY = touchY;
-
-				/** if you're at the top and still pulling down, do nothing **/
-				if (document.querySelectorAll('body')[0].scrollTop == 0 && touchYDelta > 0) {
-					e.preventDefault();
-					return;
-				}
-			}
-			document.addEventListener('touchmove', touchmoveDisable, false);
+      var lastTouchY=0,
+      touchmoveDisable=function(e){
+        var o=e.touches[0].clientY,
+        t=o-lastTouchY;
+        return 
+        lastTouchY=o,
+        0==document.querySelectorAll("body")[0].scrollTop&&t>0?void e.preventDefault():void 0
+      };
+      
+      document.addEventListener("touchmove",touchmoveDisable,!1);
 		</script>
 		<paper-material class="refreshShadow" elevation="2">
 			<div class="refresh">
@@ -174,178 +169,100 @@
 			*
 			*/
 			ready: function() {
-				Polymer.dom(this.root).querySelector('.refreshIcon').style.fill = this.color;
-
-				var refreshShadow = Polymer.dom(this.root).querySelector('.refreshShadow'),
-					refreshIcon = Polymer.dom(this.root).querySelector('.refreshIcon'),
-					refresh = Polymer.dom(this.root).querySelector('.refresh'),
-					refreshSpinner = Polymer.dom(this.root).querySelector('.refreshSpinner');
-
-				var dragStore = 0,
-					spinStore = -90,
-					distance = this.distance,
-					action = this.action;
-
-				this.updateStyles();
-
-				/** Shorthand variables **/
-				var attribute = this,
-					container = document.querySelectorAll(attribute.container)[0],
-					refreshIcon = attribute.querySelectorAll('iron-icon')[0];
-
-				/** Picks up the actionTrigger hook place by Dev to control animations **/
-				function actionTimer() {
-					if(spinStore.toFixed(0) % 360 == 270) {
-						if (actionTrigger === 1) {
-							refresh.classList.add("hidden");
-							refreshSpinner.classList.remove("hidden");
-							refreshSpinner.setAttribute("active","");
-							actionTimerEnd();
-						} else {
-							actionTimerEnd();
-						}
-					} else {
-						spinStore++;
-						setTimeout(function() {
-							attribute.spin = spinStore;
-							actionTimer();
-						},1);
-					}
-				}		
-
-				function actionTimerEnd() {
-					if (actionTrigger == 1) {
-						setTimeout( function() {
-							actionTimerEnd();
-						}, 1000);
-					} else {
-						scaleAway();
-					}
-				}
-
-				/** Animates refreshIcon returning to the set Distance, then triggers Dev action **/
-				function bounceToDistance() {
-					if (dragStore > distance) {
-						dragStore = dragStore - 4;
-						spinStore = spinStore + 4;
-						setTimeout(function() {
-							attribute.drag = dragStore;
-							attribute.spin = spinStore;
-							bounceToDistance();
-						},1);
-					} else {
-						eval(action);
-						/** If the Dev hasn't included the actionTrigger hook, fake the timing animation otherwise start actionTimer **/
-						if(typeof actionTrigger === "undefined"){
-							setTimeout( function() {
-								scaleAway();
-							}, 1000);
-							refresh.classList.add("hidden");
-							refreshSpinner.classList.remove("hidden");
-							refreshSpinner.setAttribute("active","");
-						} else {
-							actionTimer();
-						}
-					}
-				}
-
-				/** Scale refreshIcon out of existence, and then reset the animation for next time **/
-				function scaleAway() {
-					refreshShadow.classList.add("scale");
-					setTimeout( function() {
-						dragStore = 0;
-						attribute.drag = dragStore;
-						refreshShadow.classList.remove("scale");
-						refreshSpinner.removeAttribute("active");
-					},500);          
-				}
-
-				/** Roll refreshIcon back up out of view **/
-				function bounceToZero() {
-					if (dragStore > 0) {
-						dragStore--;
-						spinStore--;
-						setTimeout( function() {
-							attribute.drag = dragStore;
-							attribute.spin = spinStore;
-							bounceToZero();
-						},5);
-					}
-				}
-
-				/** touch location and saturation variables **/
-				var lastTouchY = 0,
-					startTouchY = 0,
-					endTouchY = 0,
-					desatStore = 100;
-
-				/** on touch start set starting touches and reseat animations in case missed. **/
-				var touchstartHandler = function(e) {
-					refresh.classList.remove("hidden");
-					refreshSpinner.classList.add("hidden");
-					spinStore = -90;
-					attribute.spin = spinStore;
-					if (e.touches.length != 1) return;
-					lastTouchY = e.touches[0].clientY;
-					startTouchY = e.touches[0].clientY;
-				}
-
-				/** on touch move (within container) **/
-				var touchmoveHandler = function(e) {
-					/** variables to set Y distance **/
-					var touchY = e.touches[0].clientY;
-					var touchYDelta = touchY - lastTouchY;
-					lastTouchY = touchY;
-					endTouchY = e.touches[0].clientY;
-
-					/** if you're at the top of the container, start animations **/
-					if (container.scrollTop == 0) {
-						dragStore = endTouchY - startTouchY;
-						spinStore = spinStore - (dragStore / distance);
-						desatStore = 100 - ((dragStore / distance) * 100);
-						attribute.drag = dragStore;
-						attribute.spin = spinStore;
-						attribute.desat = desatStore;
-					}
-
-					/** This is here to disable the standard pull to refresh  **/
-					if (container.scrollTop == 0 && touchYDelta > 0) {
-						e.preventDefault();
-						return;
-					}
-
-					/** This stops you being able to scroll down the page while you manually put refreshIcon back **/
-					if (dragStore > 0) {
-						e.preventDefault();
-						return;
-					}
-				}
-
-				/** on touch end **/
-				var touchendHandler = function(e) {
-					/** if user has met desired distance start action chain otherwise hide refreshIcon **/
-					refreshSpinner.querySelector('#spinnerContainer').classList.remove("cooldown");
-					if (container.scrollTop == 0 && dragStore >= distance) {
-						bounceToDistance();
-					} else {
-						bounceToZero();
-					}
-				}
-
-				/** listening for user input **/
-				container.addEventListener('touchstart', touchstartHandler, false);
-				container.addEventListener('touchmove', touchmoveHandler, false);
-				container.addEventListener('touchend', touchendHandler, false);
-			},
+				function actionTimer(){
+          spinStore.toFixed(0)%360==270?1===actionTrigger?(refresh.classList.add("hidden"),
+          refreshSpinner.classList.remove("hidden"),
+          refreshSpinner.setAttribute("active",""),
+          actionTimerEnd()):actionTimerEnd():(spinStore++,setTimeout(function(){
+            attribute.spin=spinStore,
+            actionTimer()
+          },1))
+        }
+        function actionTimerEnd(){
+          1==actionTrigger?setTimeout(function(){
+            actionTimerEnd()},1e3):scaleAway()
+        }
+        function bounceToDistance(){
+          dragStore>distance?(dragStore-=4,spinStore+=4,setTimeout(function(){
+            attribute.drag=dragStore,
+            attribute.spin=spinStore,
+            bounceToDistance()
+          },1)):(eval(action),
+          "undefined"==typeof actionTrigger?(setTimeout(function(){
+            scaleAway()
+          },1e3),
+          refresh.classList.add("hidden"),
+          refreshSpinner.classList.remove("hidden"),
+          refreshSpinner.setAttribute("active","")):actionTimer())
+        }
+        function scaleAway(){
+          refreshShadow.classList.add("scale"),
+          setTimeout(function(){
+            dragStore=0,
+            attribute.drag=dragStore,
+            refreshShadow.classList.remove("scale"),
+            refreshSpinner.removeAttribute("active")
+          },500)
+        }
+        function bounceToZero(){
+          dragStore>0&&(dragStore--,spinStore--,setTimeout(function(){
+            attribute.drag=dragStore,
+            attribute.spin=spinStore,
+            bounceToZero()
+          },5))
+        }
+        Polymer.dom(this.root).querySelector(".refreshIcon").style.fill=this.color;
+        var refreshShadow=Polymer.dom(this.root).querySelector(".refreshShadow"),
+        refreshIcon=Polymer.dom(this.root).querySelector(".refreshIcon"),
+        refresh=Polymer.dom(this.root).querySelector(".refresh"),
+        refreshSpinner=Polymer.dom(this.root).querySelector(".refreshSpinner"),
+        dragStore=0,
+        spinStore=-90,
+        distance=this.distance,
+        action=this.action;
+        this.updateStyles();
+        var attribute=this,
+        container=document.querySelectorAll(attribute.container)[0],
+        refreshIcon=attribute.querySelectorAll("iron-icon")[0],
+        lastTouchY=0,
+        startTouchY=0,
+        endTouchY=0,
+        desatStore=100,
+        touchstartHandler=function(e){
+          refresh.classList.remove("hidden"),
+          refreshSpinner.classList.add("hidden"),
+          spinStore=-90,
+          attribute.spin=spinStore,
+          1==e.touches.length&&(lastTouchY=e.touches[0].clientY,startTouchY=e.touches[0].clientY)
+        },
+        touchmoveHandler=function(e){
+          var t=e.touches[0].clientY,r=t-lastTouchY;return lastTouchY=t,
+          endTouchY=e.touches[0].clientY,
+          0==container.scrollTop&&(dragStore=endTouchY-startTouchY,
+          spinStore-=dragStore/distance,
+          desatStore=100-dragStore/distance*100,
+          attribute.drag=dragStore,
+          attribute.spin=spinStore,
+          attribute.desat=desatStore),
+          0==container.scrollTop&&r>0?void e.preventDefault():dragStore>0?void e.preventDefault():void 0
+        },
+        touchendHandler=function(){
+          refreshSpinner.querySelector("#spinnerContainer").classList.remove("cooldown"),
+          0==container.scrollTop&&dragStore>=distance?bounceToDistance():bounceToZero()
+        };
+        container.addEventListener("touchstart",touchstartHandler,!1),
+        container.addEventListener("touchmove",touchmoveHandler,!1),
+        container.addEventListener("touchend",touchendHandler,!1);
+        },
 			updateStyles: function () {
-				var refreshShadow = Polymer.dom(this.root).querySelector('.refreshShadow');
-				refreshShadow.style.top = (this.drag - 50) / 3 + 'px';
-				refreshShadow.style.opacity = this.drag / this.distance;
-				refreshShadow.style.transform = 'scale(' + this.scale + ')';
-
-				var refreshIcon = Polymer.dom(this.root).querySelector('.refreshIcon');
-				refreshIcon.style.transform = 'rotateZ(' + this.spin + 'deg)';
-				refreshIcon.style.filter = 'grayscale(' + this.desat + '%)';
+        var refreshShadow=Polymer.dom(this.root).querySelector(".refreshShadow");
+        refreshShadow.style.top=(this.drag-50)/3+"px",
+        refreshShadow.style.opacity=this.drag/this.distance,
+        refreshShadow.style.transform="scale("+this.scale+")";
+        
+        var refreshIcon=Polymer.dom(this.root).querySelector(".refreshIcon");
+        refreshIcon.style.transform="rotateZ("+this.spin+"deg)",
+        refreshIcon.style.filter="grayscale("+this.desat+"%)";
 			}
 		});
 	})();
