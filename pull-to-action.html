@@ -12,11 +12,6 @@
       z-index:99;
       width:100%
     }
-    iron-icon {
-      display:block;
-      --iron-icon-width:32px;
-      --iron-icon-height:32px
-    }
     .refresh {
       width:32px;
       height:32px;
@@ -30,7 +25,7 @@
       height:22px
     }
     .refreshStem {
-      stroke-dasharray: 55;
+      stroke-dasharray: 35;
       fill: rgba(0, 0, 0, 0);
       stroke-width: 1;
     }
@@ -260,21 +255,19 @@
             startTouchY=a.touches[0].clientY)
           },
           /** on touch move (within container) **/
-          touchmoveHandler=function(c){
-            var a=c.touches[0].clientY,
-            b=a-lastTouchY;
-            return lastTouchY=a,
-            endTouchY=c.touches[0].clientY,
-            0==container.scrollTop&&(
-              dragStore=endTouchY-startTouchY,
-              spinStore<=0?spinStore+=dragStore/distance*10:spinStore+=dragStore/distance*2,
-              desatStore=100-dragStore/distance*100,
-              attribute.drag=dragStore,
-              attribute.spin=spinStore,
-              attribute.desat=desatStore
-            ),
+          touchmoveHandler=function(t){
+            var e=t.touches[0].clientY,
+            r=e-lastTouchY;
+            return lastTouchY=e,
+            endTouchY=t.touches[0].clientY,
+            0==container.scrollTop&&(dragStore=endTouchY-startTouchY,
+            spinStore+=spinStore<=0?dragStore/distance*10:dragStore/distance*2,
+            desatStore=100-dragStore/distance*100,
+            attribute.drag=dragStore,
+            attribute.spin=spinStore,
+            attribute.desat=desatStore),
             /** if you're at the top of the container, start animations **/
-            0==container.scrollTop&&b>0?void c.preventDefault():dragStore>0?void c.preventDefault():void 0
+            0==container.scrollTop&&r>0?void t.preventDefault():dragStore>0?void t.preventDefault():void 0
           },
           /** on touch end **/
           touchendHandler=function(){
@@ -291,11 +284,11 @@
         refreshShadow.style.opacity=this.drag/this.distance,
         refreshShadow.style.transform="scale("+this.scale+")";
         
-        var refreshIcon=Polymer.dom(this.root).querySelector(".refreshIcon");
-        var refreshStem=Polymer.dom(this.root).querySelector(".refreshStem");
+        var refreshIcon=Polymer.dom(this.root).querySelector(".refreshIcon"),
+        refreshStem=Polymer.dom(this.root).querySelector(".refreshStem");
         refreshIcon.style.transform="rotateZ("+this.spin+"deg)",
-        55>=(50*(this.drag/this.distance))?refreshIcon.style.strokeDashoffset=55-(50*(this.drag/this.distance)):refreshIcon.style.strokeDashoffset=0,
-        2>=(2*(this.drag/this.distance))?refreshStem.style.strokeWidth=2*(this.drag/this.distance):refreshStem.style.strokeWidth=2,
+        refreshIcon.style.strokeDashoffset=35>=35*(this.drag/this.distance)?35-35*(this.drag/this.distance):0,
+        refreshStem.style.strokeWidth=2>=2*(this.drag/this.distance)?2*(this.drag/this.distance):2,
         refreshIcon.style.filter="grayscale("+this.desat+"%)";
 			}
 		});
