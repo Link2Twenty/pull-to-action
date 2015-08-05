@@ -29,6 +29,11 @@
       width:22px;
       height:22px
     }
+    .refreshStem {
+      stroke-dasharray: 55;
+      fill: rgba(0, 0, 0, 0);
+      stroke-width: 1;
+    }
     .hidden {
       display:none
     }
@@ -79,7 +84,22 @@
 		</script>
 		<paper-material class="refreshShadow" elevation="2">
 			<div class="refresh">
-				<iron-icon class="refreshIcon" icon="refresh"></iron-icon>
+				<svg class="refreshIcon" viewBox="0 0 24 24">
+    <g>    
+        <path 
+        class="refreshStem" 
+        transform="rotate(-45 12.000000476837158,12.000000476837158), translate(24), scale(-1, 1)"
+        d="m5.02361,12c0,-3.87126 3.12203,-7.00698 6.97639,
+        -7.00698c3.85436,0 6.97639,3.13572 6.97639,
+        7.00698c0,3.87126 -3.12203,7.00698 -6.97639,7.00698c-3.85436,
+        0 -6.97639,-3.13572 -6.97639,-7.00698z" />                
+        <rect fill="#ffffff" stroke-width="0" x="17" y="11.029" width="4" height="3" stroke="#ffffff"/>
+        <path 
+        class="refreshHead" 
+        d="m12.97192,10.96708l0,-6.99941l7.06761,6.99941l-7.06761,0z"
+        transform="rotate(-90 16.5,7.5) " />
+    </g>
+ </svg>
 			</div>
 			<paper-spinner class="refresh refreshSpinner hidden"></paper-spinner>
 		</paper-material>
@@ -158,7 +178,7 @@
 					observer: 'updateStyles'
 				},
 				spin: {
-					value: -90,
+					value: -270,
 					observer: 'updateStyles'
 				}
 
@@ -212,12 +232,13 @@
             },5))
           }
           Polymer.dom(this.root).querySelector(".refreshIcon").style.fill=this.color;
+          Polymer.dom(this.root).querySelector(".refreshStem").style.stroke=this.color;
           var refreshShadow=Polymer.dom(this.root).querySelector(".refreshShadow"),
           refreshIcon=Polymer.dom(this.root).querySelector(".refreshIcon"),
           refresh=Polymer.dom(this.root).querySelector(".refresh"),
           refreshSpinner=Polymer.dom(this.root).querySelector(".refreshSpinner"),
           dragStore=0,
-          spinStore=-90,
+          spinStore=-270,
           distance=this.distance,
           action=this.action;
           this.updateStyles();
@@ -233,7 +254,7 @@
           touchstartHandler=function(a){
             refresh.classList.remove("hidden"),
             refreshSpinner.classList.add("hidden"),
-            spinStore=-90,
+            spinStore=-270,
             attribute.spin=spinStore,
             1==a.touches.length&&(lastTouchY=a.touches[0].clientY,
             startTouchY=a.touches[0].clientY)
@@ -246,7 +267,7 @@
             endTouchY=c.touches[0].clientY,
             0==container.scrollTop&&(
               dragStore=endTouchY-startTouchY,
-              spinStore-=dragStore/distance,
+              spinStore<=0?spinStore+=dragStore/distance*10:spinStore+=dragStore/distance*2,
               desatStore=100-dragStore/distance*100,
               attribute.drag=dragStore,
               attribute.spin=spinStore,
@@ -271,7 +292,10 @@
         refreshShadow.style.transform="scale("+this.scale+")";
         
         var refreshIcon=Polymer.dom(this.root).querySelector(".refreshIcon");
+        var refreshStem=Polymer.dom(this.root).querySelector(".refreshStem");
         refreshIcon.style.transform="rotateZ("+this.spin+"deg)",
+        55>=(50*(this.drag/this.distance))?refreshIcon.style.strokeDashoffset=55-(50*(this.drag/this.distance)):refreshIcon.style.strokeDashoffset=0,
+        2>=(2*(this.drag/this.distance))?refreshStem.style.strokeWidth=2*(this.drag/this.distance):refreshStem.style.strokeWidth=2,
         refreshIcon.style.filter="grayscale("+this.desat+"%)";
 			}
 		});
