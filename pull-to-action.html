@@ -169,31 +169,27 @@
 			*
 			*/
 			ready: function() {
-        /** Picks up the actionTrigger hook place by Dev to control animations **/
-				function actionTimer(){
+      /** Picks up the actionTrigger hook place by Dev to control animations **/
+        function actionTimer(){
           spinStore.toFixed(0)%360==270?1===actionTrigger?(refresh.classList.add("hidden"),
           refreshSpinner.classList.remove("hidden"),
           refreshSpinner.setAttribute("active",""),
           actionTimerEnd()):actionTimerEnd():(spinStore++,setTimeout(function(){
-            attribute.spin=spinStore,
-            actionTimer()
-          },1))
-        }   
+            attribute.spin=spinStore,actionTimer()
+          },1))}
         function actionTimerEnd(){
           1==actionTrigger?setTimeout(function(){
-            actionTimerEnd()},1e3):scaleAway()
+            actionTimerEnd()
+          },1000):scaleAway()
         }
         /** Animates refreshIcon returning to the set Distance, then triggers Dev action **/
         function bounceToDistance(){
-          dragStore>distance?(dragStore-=4,spinStore+=4,setTimeout(function(){
-            attribute.drag=dragStore,
-            attribute.spin=spinStore,
-            bounceToDistance()
-          },1)):(eval(action),
-          /** If the Dev hasn't included the actionTrigger hook, fake the timing animation otherwise start actionTimer **/
-          "undefined"==typeof actionTrigger?(setTimeout(function(){
+        dragStore>distance?(dragStore-=4,spinStore+=4,setTimeout(function(){
+          attribute.drag=dragStore,
+          attribute.spin=spinStore,
+          bounceToDistance()},1)):(eval(action),"undefined"==typeof actionTrigger?(setTimeout(function(){
             scaleAway()
-          },1e3),
+          },1000),
           refresh.classList.add("hidden"),
           refreshSpinner.classList.remove("hidden"),
           refreshSpinner.setAttribute("active","")):actionTimer())
@@ -205,65 +201,68 @@
             dragStore=0,
             attribute.drag=dragStore,
             refreshShadow.classList.remove("scale"),
-            refreshSpinner.removeAttribute("active")
-          },500)
-        }
-        /** Roll refreshIcon back up out of view **/
-        function bounceToZero(){
-          dragStore>0&&(dragStore--,spinStore--,setTimeout(function(){
-            attribute.drag=dragStore,
-            attribute.spin=spinStore,
-            bounceToZero()
-          },5))
-        }
-        Polymer.dom(this.root).querySelector(".refreshIcon").style.fill=this.color;
-        var refreshShadow=Polymer.dom(this.root).querySelector(".refreshShadow"),
-        refreshIcon=Polymer.dom(this.root).querySelector(".refreshIcon"),
-        refresh=Polymer.dom(this.root).querySelector(".refresh"),
-        refreshSpinner=Polymer.dom(this.root).querySelector(".refreshSpinner"),
-        dragStore=0,
-        spinStore=-90,
-        distance=this.distance,
-        action=this.action;
-        this.updateStyles();
-        var attribute=this,
-        container=document.querySelectorAll(attribute.container)[0],
-        refreshIcon=attribute.querySelectorAll("iron-icon")[0],
-        /** touch location and saturation variables **/
-        lastTouchY=0,
-        startTouchY=0,
-        endTouchY=0,
-        desatStore=100,
-        /** on touch start set starting touches and reseat animations in case missed. **/
-        touchstartHandler=function(e){
-          refresh.classList.remove("hidden"),
-          refreshSpinner.classList.add("hidden"),
+            refreshSpinner.removeAttribute("active")},500)
+          }
+          /** Roll refreshIcon back up out of view **/
+          function bounceToZero(){
+            dragStore>0&&(dragStore--,spinStore--,setTimeout(function(){
+              attribute.drag=dragStore,
+              attribute.spin=spinStore,
+              bounceToZero()
+            },5))
+          }
+          Polymer.dom(this.root).querySelector(".refreshIcon").style.fill=this.color;
+          var refreshShadow=Polymer.dom(this.root).querySelector(".refreshShadow"),
+          refreshIcon=Polymer.dom(this.root).querySelector(".refreshIcon"),
+          refresh=Polymer.dom(this.root).querySelector(".refresh"),
+          refreshSpinner=Polymer.dom(this.root).querySelector(".refreshSpinner"),
+          dragStore=0,
           spinStore=-90,
-          attribute.spin=spinStore,
-          1==e.touches.length&&(lastTouchY=e.touches[0].clientY,startTouchY=e.touches[0].clientY)
-        },
-        /** on touch move (within container) **/
-        touchmoveHandler=function(e){
-          var t=e.touches[0].clientY,r=t-lastTouchY;return lastTouchY=t,
-          endTouchY=e.touches[0].clientY,
-          0==container.scrollTop&&(dragStore=endTouchY-startTouchY,
-          spinStore-=dragStore/distance,
-          desatStore=100-dragStore/distance*100,
-          attribute.drag=dragStore,
-          attribute.spin=spinStore,
-          attribute.desat=desatStore),
-          /** if you're at the top of the container, start animations **/
-          0==container.scrollTop&&r>0?void e.preventDefault():dragStore>0?void e.preventDefault():void 0
-        },
-        /** on touch end **/
-        touchendHandler=function(){
-          refreshSpinner.querySelector("#spinnerContainer").classList.remove("cooldown"),
-          /** if user has met desired distance start action chain otherwise hide refreshIcon **/
-          0==container.scrollTop&&dragStore>=distance?bounceToDistance():bounceToZero()
-        };
-        container.addEventListener("touchstart",touchstartHandler,!1),
-        container.addEventListener("touchmove",touchmoveHandler,!1),
-        container.addEventListener("touchend",touchendHandler,!1);
+          distance=this.distance,
+          action=this.action;
+          this.updateStyles();
+          var attribute=this,
+          container=document.querySelectorAll(attribute.container)[0],
+          refreshIcon=attribute.querySelectorAll("iron-icon")[0],
+          /** touch location and saturation variables **/
+          lastTouchY=0,
+          startTouchY=0,
+          endTouchY=0,
+          desatStore=100,
+          /** on touch start set starting touches and reseat animations in case missed. **/
+          touchstartHandler=function(a){
+            refresh.classList.remove("hidden"),
+            refreshSpinner.classList.add("hidden"),
+            spinStore=-90,
+            attribute.spin=spinStore,
+            1==a.touches.length&&(lastTouchY=a.touches[0].clientY,
+            startTouchY=a.touches[0].clientY)
+          },
+          /** on touch move (within container) **/
+          touchmoveHandler=function(c){
+            var a=c.touches[0].clientY,
+            b=a-lastTouchY;
+            return lastTouchY=a,
+            endTouchY=c.touches[0].clientY,
+            0==container.scrollTop&&(
+              dragStore=endTouchY-startTouchY,
+              spinStore-=dragStore/distance,
+              desatStore=100-dragStore/distance*100,
+              attribute.drag=dragStore,
+              attribute.spin=spinStore,
+              attribute.desat=desatStore
+            ),
+            /** if you're at the top of the container, start animations **/
+            0==container.scrollTop&&b>0?void c.preventDefault():dragStore>0?void c.preventDefault():void 0
+          },
+          /** on touch end **/
+          touchendHandler=function(){
+            refreshSpinner.querySelector("#spinnerContainer").classList.remove("cooldown"),
+            0==container.scrollTop&&dragStore>=distance?bounceToDistance():bounceToZero()
+          };
+          container.addEventListener("touchstart",touchstartHandler,!1),
+          container.addEventListener("touchmove",touchmoveHandler,!1),
+          container.addEventListener("touchend",touchendHandler,!1);
         },
 			updateStyles: function () {
         var refreshShadow=Polymer.dom(this.root).querySelector(".refreshShadow");
