@@ -4,7 +4,7 @@
 
 Before we get started here is a little example of what it can look like baked into a real app
 
-![Screenshot](http://s1.postimg.org/z5h53bjzz/style.gif)
+![Screenshot](http://s24.postimg.org/f8vng9l5h/new_animation.gif)
 
 ## Getting started
 
