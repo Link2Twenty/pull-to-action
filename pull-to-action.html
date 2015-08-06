@@ -18,7 +18,7 @@
     .refreshStem {
       stroke-dasharray: 35;
       fill:rgba(0, 0, 0, 0);
-      stroke-width:1;
+      stroke-width:1
     }
     .hidden {
       display:none
@@ -33,7 +33,7 @@
 			width:32px;
 			height:32px;
 			border-radius:50%;
-			margin:0 auto;
+			margin:0 auto
 		}
     @-webkit-keyframes scaleAway {
       0% {transform:scale(1)}
@@ -192,7 +192,8 @@
             dragStore=0,
             attribute.drag=dragStore,
             refreshShadow.classList.remove("scale"),
-            refreshSpinner.removeAttribute("active")},500)
+            refreshSpinner.removeAttribute("active")
+          },500)
         }
         /** Roll refreshIcon back up out of view **/
         function bounceToZero(){
@@ -235,7 +236,7 @@
           return lastTouchY=e,
           endTouchY=t.touches[0].clientY,
           0==container.scrollTop&&(dragStore=endTouchY-startTouchY,
-          spinStore+=spinStore<=0?dragStore/distance*10:dragStore/distance*2,
+          r>0?spinStore+=spinStore<=0?dragStore/distance*10:dragStore/distance*2:spinStore-=dragStore/distance*5,
           desatStore=100-dragStore/distance*100,
           attribute.drag=dragStore,
           attribute.spin=spinStore,
