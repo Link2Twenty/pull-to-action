@@ -1,0 +1,274 @@
+<link rel="import" href="../paper-material/paper-material.html" />
+<link rel="import" href="../paper-spinner/paper-spinner.html" />
+
+<dom-module id="pull-to-action">
+	<style>
+    :host {
+      width:100%;
+      position: relative;
+      top: 0;
+      left: 0;
+      right: 0
+    }
+    .refresh {
+      background-color:#fff;
+      border-radius:50%;
+    }
+    .refreshSpinner {
+      padding:5px;
+      width:22px;
+      height:22px
+    }
+    .refreshStem {
+      stroke-dasharray: 35;
+      fill:rgba(0, 0, 0, 0);
+      stroke-width:1
+    }
+    .hidden {
+      display:none
+    }
+    .scale {
+      -webkit-animation:scaleAway .5s;
+      -moz-animation:scaleAway .5s;
+      -o-animation:scaleAway .5s;
+      animation:scaleAway .5s
+    }
+    .refreshShadow {
+			width:32px;
+			height:32px;
+			border-radius:50%;
+			margin:0 auto
+		}
+    @-webkit-keyframes scaleAway {
+      0% {transform:scale(1)}
+      100% {transform:scale(0)}
+    }
+    @-moz-keyframes scaleAway {
+      0% {transform:scale(1)}
+      100% {transform:scale(0)}
+    }
+    @-o-keyframes scaleAway {
+      0% {transform:scale(1)}
+      100% {transform:scale(0)}
+    }
+    @keyframes scaleAway {
+      0% {transform:scale(1)}
+      100% {transform:scale(0)}
+    }
+	</style>
+	<template>
+		<script>
+      var lastTouchY=0,
+      touchmoveDisable=function(e){
+        var o=e.touches[0].clientY,
+        t=o-lastTouchY;
+        return lastTouchY=o,
+        0==document.querySelectorAll("body")[0].scrollTop&&t>0?void e.preventDefault():void 0
+      };
+      document.addEventListener("touchmove",touchmoveDisable,!1);
+		</script>
+		<paper-material class="refreshShadow" elevation="2">
+			<svg class="refreshIcon refresh" viewBox="0 0 24 24"><g>    
+        <path class="refreshStem" transform="rotate(-45 12.000000476837158,12.000000476837158), translate(24), scale(-1, 1)"
+        d="m5.02361,12c0,-3.87126 3.12203,-7.00698 6.97639,-7.00698c3.85436,0 6.97639,3.13572 6.97639,
+        7.00698c0,3.87126 -3.12203,7.00698 -6.97639,7.00698c-3.85436,0 -6.97639,-3.13572 -6.97639,-7.00698z" />                
+        <rect fill="#ffffff" stroke-width="0" x="17" y="11.029" width="4" height="3" stroke="#ffffff"/>
+        <path class="refreshHead" transform="rotate(-90 16.5,7.5) " 
+        d="m12.97192,10.96708l0,-6.99941l7.06761,6.99941l-7.06761,0z" />
+      </g></svg>
+			<paper-spinner class="refresh refreshSpinner hidden"></paper-spinner>
+		</paper-material>
+	</template>
+</dom-module>
+<script>
+	( function () {
+		Polymer({
+			is: 'pull-to-action',
+			properties: {
+				/**
+				* The callback action that will be executed
+				* when the user releases the pull element
+				*
+				* @attribute action
+				* @type function
+				* @default alert("You need to set the action attribute")
+				*/
+				action: {
+					type: String,
+					value: 'alert("You need to set the action attribute")',
+					notify: true
+				},
+				/**
+				* The default color in which the refresh icon will
+				* be displayed
+				*
+				* @attribute color
+				* @type string
+				* @default '#ccc'
+				*/
+				color: {
+					type: String,
+					value: '#ccc',
+					notify: true
+				},
+				/**
+				* The default container to which the pull-to-action
+				* element will bind to
+				*
+				* @attribute container
+				* @type string
+				* @default 'body'
+				*/
+				container: {
+					type: String,
+					value: 'body',
+					notify: true
+				},
+				/**
+				* The distance until the refresh icon
+				* triggers action
+				*
+				* @attribute distance
+				* @type integer
+				* @default 100
+				*/
+				distance: {
+					value: 100,
+					notify: true,
+					observer: 'updateStyles'
+				},
+				/**
+				* Other variables
+				* these are calculated by the JS
+				*
+				*/
+				desat: {
+					type: String,
+					value: '100',
+					observer: 'updateStyles'
+				},
+				drag: {
+					type: Number,
+					value: 0,
+					observer: 'updateStyles'
+				},
+				spin: {
+					value: -270,
+					observer: 'updateStyles'
+				}
+			},
+			/**
+			* Starting the scripts
+			* domReady for when the dom is... rea
+			*
+			*/
+			ready: function() {
+      /** Picks up the actionTrigger hook place by Dev to control animations **/
+        function actionTimer(){
+          spinStore.toFixed(0)%360==270?1===actionTrigger?(refresh.classList.add("hidden"),
+          refreshSpinner.classList.remove("hidden"),
+          refreshSpinner.setAttribute("active",""),
+          actionTimerEnd()):actionTimerEnd():(spinStore++,setTimeout(function(){
+            attribute.spin=spinStore,
+            actionTimer()
+          },1))}
+        function actionTimerEnd(){
+          1==actionTrigger?setTimeout(function(){
+            actionTimerEnd()
+          },1000):scaleAway()
+        }
+        /** Animates refreshIcon returning to the set Distance, then triggers Dev action **/
+        function bounceToDistance(){
+        dragStore>distance?(dragStore-=4,spinStore+=4,setTimeout(function(){
+          attribute.drag=dragStore,
+          attribute.spin=spinStore,
+          bounceToDistance()},1)):(eval(action),"undefined"==typeof actionTrigger?(setTimeout(function(){
+            scaleAway()
+          },1000),
+          refresh.classList.add("hidden"),
+          refreshSpinner.classList.remove("hidden"),
+          refreshSpinner.setAttribute("active","")):actionTimer())
+        }
+        /** Scale refreshIcon out of existence, and then reset the animation for next time **/
+        function scaleAway(){
+          refreshShadow.classList.add("scale"),
+          setTimeout(function(){
+            dragStore=0,
+            attribute.drag=dragStore,
+            refreshShadow.classList.remove("scale"),
+            refreshSpinner.removeAttribute("active")
+          },500)
+        }
+        /** Roll refreshIcon back up out of view **/
+        function bounceToZero(){
+          dragStore>0&&(dragStore--,spinStore--,setTimeout(function(){
+            attribute.drag=dragStore,
+            attribute.spin=spinStore,
+            bounceToZero()
+          },5))
+        }
+        Polymer.dom(this.root).querySelector(".refreshHead").style.fill=this.color;
+        Polymer.dom(this.root).querySelector(".refreshStem").style.stroke=this.color;
+        var refreshShadow=Polymer.dom(this.root).querySelector(".refreshShadow"),
+        refresh=Polymer.dom(this.root).querySelector(".refresh"),
+        refreshSpinner=Polymer.dom(this.root).querySelector(".refreshSpinner"),
+        dragStore=0,
+        spinStore=-270,
+        distance=this.distance,
+        action=this.action;
+        this.updateStyles();
+        var attribute=this,
+        container=document.querySelectorAll(attribute.container)[0],
+        /** touch location and saturation variables **/
+        lastTouchY=0,
+        startTouchY=0,
+        endTouchY=0,
+        desatStore=100,
+        /** on touch start set starting touches and reseat animations in case missed. **/
+        touchstartHandler=function(a){
+          refresh.classList.remove("hidden"),
+          refreshSpinner.classList.add("hidden"),
+          spinStore=-270,
+          attribute.spin=spinStore,
+          1==a.touches.length&&(lastTouchY=a.touches[0].clientY,
+          startTouchY=a.touches[0].clientY)
+        },
+        /** on touch move (within container) **/
+        touchmoveHandler=function(t){
+          var e=t.touches[0].clientY,
+          r=e-lastTouchY;
+          return lastTouchY=e,
+          endTouchY=t.touches[0].clientY,
+          0==container.scrollTop&&(dragStore=endTouchY-startTouchY,
+          r>0?spinStore+=spinStore<=0?dragStore/distance*10:dragStore/distance*2:spinStore-=dragStore/distance*5,
+          desatStore=100-dragStore/distance*100,
+          attribute.drag=dragStore,
+          attribute.spin=spinStore,
+          attribute.desat=desatStore),
+          /** if you're at the top of the container, start animations **/
+          0==container.scrollTop&&r>0?void t.preventDefault():dragStore>0?void t.preventDefault():void 0
+        },
+        /** on touch end **/
+        touchendHandler=function(){
+          refreshSpinner.querySelector("#spinnerContainer").classList.remove("cooldown"),
+          0==container.scrollTop&&dragStore>=distance?bounceToDistance():bounceToZero()
+        };
+        container.addEventListener("touchstart",touchstartHandler,!1),
+        container.addEventListener("touchmove",touchmoveHandler,!1),
+        container.addEventListener("touchend",touchendHandler,!1);
+      },
+			updateStyles: function () {
+        var refreshShadow=Polymer.dom(this.root).querySelector(".refreshShadow"),
+        refreshIcon=Polymer.dom(this.root).querySelector(".refreshIcon"),
+        refreshStem=Polymer.dom(this.root).querySelector(".refreshStem");       
+        refreshShadow.style.top=(this.drag-50)/3+"px",
+        refreshShadow.style.opacity=this.drag/this.distance,
+        refreshShadow.style.transform="scale("+this.scale+")",
+        refreshIcon.style.transform="rotateZ("+this.spin+"deg)",
+        refreshIcon.style.filter="grayscale("+this.desat+"%)",
+        refreshStem.style.strokeDashoffset=35>=35*(this.drag/this.distance)?35-35*(this.drag/this.distance):0,
+        refreshStem.style.strokeWidth=2>=2*(this.drag/this.distance)?2*(this.drag/this.distance):2;
+			}
+		});
+	})();
+</script>

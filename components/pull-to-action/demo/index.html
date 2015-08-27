@@ -1,0 +1,36 @@
+<html>
+	<head>
+		<title>Pull to action</title>
+		<meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=no">
+		<meta name="theme-color" content="#003366">
+		<script src="../webcomponentsjs/webcomponents-lite.min.js"></script>
+		
+		<link rel="import" href="pull-to-action.html">
+	</head>
+	  
+	<body>
+        
+        <!-- This is how you add pull-to-action element in your page -->
+		<pull-to-action name="PTAcontent" distance="150" color="#77ACFF" action="changeText()"></pull-to-action>
+        
+        <!-- Some other sections of the page -->
+		<div style="height:200%; text-align:center;" id="example">
+            This only works on mobile (but you can fake it in chrome)
+        </div>
+		
+		<script type="text/javascript">
+            /* 
+             * Some text data 
+             */
+            var updatedText = "Proud to say you figured it out!";
+            
+            /* 
+             * this callback function needs to be called 
+             * when the pull-to-action element is released 
+             */
+			function changeText () {
+                document.getElementById("example").innerHTML = updatedText;
+			}
+		</script>
+	</body>
+</html>
