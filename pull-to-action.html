@@ -7,9 +7,11 @@ Polymer element to trigger javaScript action on pulldown.
 
 #### Example:
 
-  <pre>
-  <pull-to-action action="location.reload()" color="red" container="#container"></pull-to-action>
-  </pre>
+  Remember placement is key the contain will mean it can only be controlled within that element, but the position is still relative
+  
+  <pull-to-action action="location.reload()" color="red" container="#container"></pull-to-action> -> reloads the whole page
+  
+  <pull-to-action action="someFunc()" color="#CCC" container="#someID"></pull-to-action> -> runs custom fuction
 
 @element pull-to-action
 @homepage http://link2twenty.github.io/pull-to-action
