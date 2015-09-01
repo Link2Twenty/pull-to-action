@@ -1,5 +1,5 @@
-# pull-to-action
-[Component page](http://link2twenty.github.io/pull-to-action/components/pull-to-action/)
+# < pull-to-action >
+Have a quick look at the [Component page](http://link2twenty.github.io/pull-to-action/components/pull-to-action/)
 ## What is it?
 "pull-to-action" is a polymer element to perform a pull to refresh like animation and action within web apps.
 
