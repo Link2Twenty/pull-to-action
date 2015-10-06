@@ -1,10 +1,10 @@
 BUILD LOG
 ---------
-Build Time: 2015-08-28T16:40:26-0700
+Build Time: 2015-09-25T15:52:57-0700
 
 NODEJS INFORMATION
 ==================
-nodejs: v0.12.7
+nodejs: v4.1.1
 del: 1.2.0
 gulp: 3.9.0
 gulp-audit: 1.0.0
@@ -17,10 +17,10 @@ run-sequence: 1.1.1
 
 REPO REVISIONS
 ==============
-polymer: bffa3527bb9cd32b81fccd1cc16c867f9f0758a4
+polymer: fe467cd62d8a2dc585606da282cd477b03e46468
 
 BUILD HASHES
 ============
 polymer-mini.html: 72c032eacc45c63431054c111d0ce86357eb07f3
-polymer-micro.html: 42f3dd36e52f8171610b8d21da5a361f5ead7b9b
-polymer.html: fafcb9bcef9f7cb9f9db0ac398fefbb4cd4d068d
+polymer-micro.html: f598c7c5fb99ded0fa8d680a417c2610b2aa6409
+polymer.html: 8e4c3244201c0b0557f14cba56a625b4cd99c208

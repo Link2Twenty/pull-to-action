@@ -1,6 +1,6 @@
 {
   "name": "pull-to-action",
-  "description": "Trigger javaScript action on pulldown",
+  "description": "Polymer Web Component to trigger javaScript action on pulldown",
   "main": "pull-to-action.html",
   "keywords": [
     "Polymer",
@@ -21,15 +21,14 @@
   ],
   "dependencies": {
     "polymer": "Polymer/polymer#^1.1.0",
-    "web-component-tester": "Polymer/web-component-tester#^3.1.3",
     "paper-material": "PolymerElements/paper-material#^1.0.0",
     "paper-spinner": "PolymerElements/paper-spinner#^1.0.0"
   },
-  "_release": "eaca73a4b2",
+  "_release": "da241696b7",
   "_resolution": {
     "type": "branch",
     "branch": "master",
-    "commit": "eaca73a4b270269c2632d2a9c8fb56b6576bae48"
+    "commit": "da241696b749eeed74b7a2c8f51d6a00fefdd085"
   },
   "_source": "git://github.com/link2twenty/pull-to-action.git",
   "_target": "*",

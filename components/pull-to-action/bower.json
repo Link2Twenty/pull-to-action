@@ -1,7 +1,7 @@
 {
   "name": "pull-to-action",
-  "version": "0.1.0",
-  "description": "Trigger javaScript action on pulldown",
+  "version": "1.0.0",
+  "description": "Polymer Web Component to trigger javaScript action on pulldown",
   "main": "pull-to-action.html",
   "keywords": [
     "Polymer",
@@ -22,7 +22,6 @@
   ],
   "dependencies": {
     "polymer": "Polymer/polymer#^1.1.0",
-    "web-component-tester": "Polymer/web-component-tester#^3.1.3",
     "paper-material": "PolymerElements/paper-material#^1.0.0",
     "paper-spinner": "PolymerElements/paper-spinner#^1.0.0"
   }
