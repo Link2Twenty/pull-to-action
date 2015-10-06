@@ -280,6 +280,12 @@ __Example:__
         container.addEventListener("touchmove",touchmoveHandler,!1),
         container.addEventListener("touchend",touchendHandler,!1);
       },
+     /**
+     * Updates all the css styles
+     * for top, opacity, scale, 
+     * rotateZ, grayscale, strokeDashoffset
+     * and strokeWidth.
+     */
 			updateStyles: function () {
         var refreshShadow=Polymer.dom(this.root).querySelector(".refreshShadow"),
         refreshIcon=Polymer.dom(this.root).querySelector(".refreshIcon"),
