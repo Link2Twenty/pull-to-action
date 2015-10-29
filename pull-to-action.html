@@ -1,6 +1,29 @@
 <link rel="import" href="../paper-material/paper-material.html" />
 <link rel="import" href="../paper-spinner/paper-spinner.html" />
 
+<!--
+Polymer element to trigger javaScript action on pulldown.
+
+__Example:__
+
+		<pull-to-action 
+			action="location.reload()" 
+			color="red" 
+			container="#container">
+		</pull-to-action> -> reloads the whole page
+
+
+		<pull-to-action 
+			action="someFunc()" 
+			color="#CCC" 
+			container="#someID">
+		</pull-to-action> -> runs custom fuction
+
+ __Remember:__ placement is key the contain will mean it can only be controlled within that element, but the position is still relative
+
+@demo
+-->
+
 <dom-module id="pull-to-action">
 	<style>
     :host {
@@ -37,7 +60,10 @@
 			width:32px;
 			height:32px;
 			border-radius:50%;
-			margin:0 auto
+			margin:0 auto;
+      border-color:#fff;
+      border-style: solid;
+      border-width: 3px;
 		}
     @-webkit-keyframes scaleAway {
       0% {transform:scale(1)}
@@ -257,6 +283,12 @@
         container.addEventListener("touchmove",touchmoveHandler,!1),
         container.addEventListener("touchend",touchendHandler,!1);
       },
+     /**
+     * Updates all the css styles
+     * for top, opacity, scale, 
+     * rotateZ, grayscale, strokeDashoffset
+     * and strokeWidth.
+     */
 			updateStyles: function () {
         var refreshShadow=Polymer.dom(this.root).querySelector(".refreshShadow"),
         refreshIcon=Polymer.dom(this.root).querySelector(".refreshIcon"),
