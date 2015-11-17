@@ -1,1 +1,6 @@
 bower_components/
+
+# IntelliJ
+**/*.iml
+**/coverage-error.log
+.idea/
