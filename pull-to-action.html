@@ -40,9 +40,10 @@ __Example:__
         }
 
         .refreshSpinner {
-            padding: 5px;
-            width: 22px;
-            height: 22px
+            padding: 0px;
+            margin: 3px;
+            width: 26px;
+            height: 26px
         }
 
         .refreshStem {
@@ -68,8 +69,6 @@ __Example:__
             border-radius: 50%;
             margin: 0 auto;
             border-color: #fff;
-            border-style: solid;
-            border-width: 3px;
         }
 
         @-webkit-keyframes scaleAway {
@@ -166,6 +165,11 @@ __Example:__
                     value: '#ccc',
                     notify: true
                 },
+                p: {
+                    type: String,
+                    value: '#ccc',
+                    notify: true
+                },
                 /**
                  * The default container to which the pull-to-action
                  * element will bind to
@@ -177,6 +181,30 @@ __Example:__
                 container: {
                     type: String,
                     value: 'body',
+                    notify: true
+                },
+                /**
+                 * Content able to trigger content-scroll event
+                 *
+                 * @attribute scrollcontentselector
+                 * @type string
+                 * @default null
+                 */
+                scrollcontentselector: {
+                    type: String,
+                    value: null,
+                    notify: true
+                },
+                /**
+                 * Enable / Disable pull to action animation and action
+                 *
+                 * @attribute enabled
+                 * @type boolean
+                 * @default false
+                 */
+                enabled: {
+                    type: Boolean,
+                    value: false,
                     notify: true
                 },
                 /**
@@ -210,10 +238,6 @@ __Example:__
                 spin: {
                     value: -270,
                     observer: 'updateStyles'
-                },
-                enabled: {
-                    type: Boolean,
-                    value: true
                 }
             },
             /**
@@ -319,13 +343,19 @@ __Example:__
                             refreshSpinner.querySelector("#spinnerContainer").classList.remove("cooldown"),
                                     0 == container.scrollTop && dragStore >= distance ? bounceToDistance() : bounceToZero()
                         };
-                this.container = container;
+                this.containerEl = container;
                 this.touchstartHandler = touchstartHandler;
                 this.touchmoveHandler = touchmoveHandler;
                 this.touchendHandler = touchendHandler;
             },
 
             attached: function () {
+                if (this.scrollcontentselector != null) {
+                    var that = this;
+                    document.querySelector(this.scrollcontentselector).addEventListener("content-scroll", function (event) {
+                        that.enable(event.detail.target.scrollTop == 0);
+                    });
+                }
                 if (this.enabled) {
                     this.addEvents();
                 }
@@ -336,19 +366,16 @@ __Example:__
             },
 
             addEvents: function () {
-                console.error(this.container);
-                this.container.addEventListener("touchstart", this.touchstartHandler, !1);
-                this.container.addEventListener("touchmove", this.touchmoveHandler, !1);
-                this.container.addEventListener("touchend", this.touchendHandler, !1);
-                console.error("addEvents");
+                this.containerEl.addEventListener("touchstart", this.touchstartHandler, !1);
+                this.containerEl.addEventListener("touchmove", this.touchmoveHandler, !1);
+                this.containerEl.addEventListener("touchend", this.touchendHandler, !1);
 
             },
 
             removeEvents: function () {
-                this.container.removeEventListener("touchstart", this.touchstartHandler);
-                this.container.removeEventListener("touchmove", this.touchmoveHandler);
-                this.container.removeEventListener("touchend", this.touchendHandler);
-                console.error("removeEvents");
+                this.containerEl.removeEventListener("touchstart", this.touchstartHandler);
+                this.containerEl.removeEventListener("touchmove", this.touchmoveHandler);
+                this.containerEl.removeEventListener("touchend", this.touchendHandler);
 
             },
 
