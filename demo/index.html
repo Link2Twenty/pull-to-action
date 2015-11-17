@@ -1,36 +1,39 @@
 <html>
-	<head>
-		<title>Pull to action</title>
-		<meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=no">
-		<meta name="theme-color" content="#003366">
-		<script src="../../webcomponentsjs/webcomponents-lite.min.js"></script>
-		
-		<link rel="import" href="../pull-to-action.html">
-	</head>
-	  
-	<body>
-        
-        <!-- This is how you add pull-to-action element in your page -->
-		<pull-to-action name="PTAcontent" distance="150" color="#77ACFF" action="changeText()"></pull-to-action>
-        
-        <!-- Some other sections of the page -->
-		<div style="height:200%; text-align:center;" id="example">
-            This only works on mobile (but you can fake it in chrome)
-        </div>
-		
-		<script type="text/javascript">
-            /* 
-             * Some text data 
-             */
-            var updatedText = "Proud to say you figured it out!";
-            
-            /* 
-             * this callback function needs to be called 
-             * when the pull-to-action element is released 
-             */
-			function changeText () {
-                document.getElementById("example").innerHTML = updatedText;
-			}
-		</script>
-	</body>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+    <title>Pull to Action</title>
+    <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+    <link rel="import" href="reddit-scan.html">
+    <link rel="import" href="../pull-to-action.html">
+    <link rel="import" href="../../polymer/polymer.html">
+    <link rel="import" href="../../paper-toolbar/paper-toolbar.html">
+    <link rel="import" href="../../paper-icon-button/paper-icon-button.html">
+    <link rel="import" href="../../iron-icons/iron-icons.html">
+    <link rel="import" href="../../paper-drawer-panel/paper-drawer-panel.html">
+    <link rel="import" href="../../paper-header-panel/paper-header-panel.html">
+    <style>
+    body {
+      background: #ccc
+    }
+    .zindex {
+      z-index: 9999;
+    }
+    </style>
+  </head>
+  <body unresolved>
+  <paper-drawer-panel id="paperDrawerPanel">
+    <div drawer >Might be a good idea to get into mobile mode</div>
+    <paper-header-panel id="h" main class="fit">
+      <pull-to-action class="zindex" action="document.querySelector('reddit-scan').doSend()" color="3949AB" container="#mainContainer"></pull-to-action>
+      <paper-toolbar id="nav">
+        <paper-icon-button icon="arrow-back" alt="Back"></paper-icon-button>
+        <div class="bottom title">Pull to action</div>
+      </paper-toolbar>
+      <div id="main">
+        <reddit-scan></reddit-scan>
+      </div>
+    </paper-header-panel>
+  </paper-drawer-panel>
+  </body>
 </html>
