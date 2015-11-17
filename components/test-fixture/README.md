@@ -1,7 +1,23 @@
-# Test Fixture
+
+<!---
+
+This README is automatically generated from the comments in these files:
+test-fixture.html
+
+Edit those files, and our readme bot will duplicate them over here!
+Edit this file, and the bot will squash your changes :)
+
+-->
+
+[![Build Status](https://travis-ci.org/PolymerElements/test-fixture.svg?branch=master)](https://travis-ci.org/PolymerElements/test-fixture)
+
+
+##&lt;test-fixture&gt;
+
+
 
 The `<test-fixture>` element can simplify the exercise of consistently
-reseting a test suite's DOM. To use it, wrap the test suite's DOM as a template:
+resetting a test suite's DOM. To use it, wrap the test suite's DOM as a template:
 
 ```html
 <test-fixture id="SomeElementFixture">
@@ -11,7 +27,7 @@ reseting a test suite's DOM. To use it, wrap the test suite's DOM as a template:
 </test-fixture>
 ```
 
-Now, the `<test-fixture>` element can be used to generate a copy if its
+Now, the `<test-fixture>` element can be used to generate a copy of its
 template:
 
 ```html
@@ -92,7 +108,7 @@ Consider the following `web-component-tester` test suite:
 <html>
 <head>
   <title>some-element test suite</title>
-  <!-- ... -->
+
   <link rel="import" href="../some-element.html">
 </head>
 <body>
@@ -127,3 +143,5 @@ It would be trivial in the above example to simply reset `someElement.foo` to
 the expected default value of `undefined` in an `afterEach` hook. However, for
 non-contrived test suites that target complex elements, this can result in a
 large quantity of ever-growing set-up and tear-down boilerplate.
+
+

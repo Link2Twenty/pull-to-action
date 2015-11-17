@@ -1,0 +1,77 @@
+<!--
+@license
+Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+<link rel="import" href="../../polymer/polymer.html">
+<link rel="import" href="../../iron-ajax/iron-ajax.html">
+<link rel="import" href="../../paper-material/paper-material.html">
+
+<!--
+An element for fetching GitHub issues
+Example:
+    <ce-repo></ce-repo>
+@group Seed Elements
+@element ce-repo
+@demo demo/index.html
+@hero hero.svg
+-->
+<dom-module id="reddit-scan">
+
+  <template>
+    <style>
+      :host {
+        display: block;
+        box-sizing: border-box;
+        margin: 0 auto;
+      }
+      :host paper-material {
+        max-width: 500px;
+        min-width: 250px;
+        width: 85%;
+        padding: 5px;
+        margin: 5px auto;
+        background: #fff;
+        z-index: -1;
+      }
+      :host .subreddit{
+        font-size: 13px;  
+      }
+      :host .header a {
+        text-decoration: none;
+        color: black;
+        text-align: justify;
+      }
+      :host .header a:hover {
+        text-decoration: underline;
+        color: darkorange;
+      }
+    </style>
+    <iron-ajax
+      auto id="ajaxGet"
+      url="https://www.reddit.com/new/.json"
+      handle-as="json"
+      last-response="{{response}}"></iron-ajax>
+
+      <template is="dom-repeat" items="{{response.data.children}}">
+          <paper-material elevation="1">
+            <div class="header"><a href="{{item.data.url}}"><b>{{item.data.title}}</b></a></div>
+            <span class="subreddit">Posted in <i>{{item.data.subreddit}}</i> by <i>{{item.data.author}}</i></span>
+          </paper-material>
+      </template>
+  </template>
+
+</dom-module>
+
+<script>
+  Polymer({
+    is: 'reddit-scan',
+    doSend: function () {
+     this.$.ajaxGet.generateRequest();
+   },
+  });
+</script>
