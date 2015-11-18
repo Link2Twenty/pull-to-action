@@ -108,16 +108,6 @@ __Example:__
         }
     </style>
     <template>
-        <script>
-            var lastTouchY = 0,
-                    touchmoveDisable = function (e) {
-                        var o = e.touches[0].clientY,
-                                t = o - lastTouchY;
-                        return lastTouchY = o,
-                                0 == document.querySelectorAll("body")[0].scrollTop && t > 0 ? void e.preventDefault() : void 0
-                    };
-            document.addEventListener("touchmove", touchmoveDisable, !1);
-        </script>
         <paper-material class="refreshShadow" elevation="2">
             <svg class="refreshIcon refresh" viewBox="0 0 24 24">
                 <g>
@@ -184,18 +174,6 @@ __Example:__
                     notify: true
                 },
                 /**
-                 * Content able to trigger content-scroll event
-                 *
-                 * @attribute scrollcontentselector
-                 * @type string
-                 * @default null
-                 */
-                scrollcontentselector: {
-                    type: String,
-                    value: null,
-                    notify: true
-                },
-                /**
                  * Enable / Disable pull to action animation and action
                  *
                  * @attribute enabled
@@ -205,7 +183,7 @@ __Example:__
                 enabled: {
                     type: Boolean,
                     value: false,
-                    notify: true
+                    observer: 'updateEnabled'
                 },
                 /**
                  * The distance until the refresh icon
@@ -347,22 +325,15 @@ __Example:__
                 this.touchstartHandler = touchstartHandler;
                 this.touchmoveHandler = touchmoveHandler;
                 this.touchendHandler = touchendHandler;
+                this.init = true;
             },
 
             attached: function () {
-                if (this.scrollcontentselector != null) {
-                    var that = this;
-                    document.querySelector(this.scrollcontentselector).addEventListener("content-scroll", function (event) {
-                        that.enable(event.detail.target.scrollTop == 0);
-                    });
-                }
-                if (this.enabled) {
-                    this.addEvents();
-                }
+                this.enabled = true;
             },
 
             detached: function () {
-                this.enable(false);
+                this.enabled = false;
             },
 
             addEvents: function () {
@@ -379,14 +350,13 @@ __Example:__
 
             },
 
-            enable: function (enabled) {
-                if (enabled != this.enabled) {
-                    if (enabled) {
+            updateEnabled: function () {
+                if (this.init) {
+                    if (this.enabled) {
                         this.addEvents();
                     } else {
                         this.removeEvents();
                     }
-                    this.enabled = enabled;
                 }
             },
 
