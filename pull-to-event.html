@@ -24,7 +24,7 @@ __Example:__
 @demo
 -->
 
-<dom-module id="pull-to-action">
+<dom-module id="pull-to-event">
     <style>
         :host {
             width: 100%;
@@ -127,21 +127,8 @@ __Example:__
 <script>
     (function () {
         Polymer({
-            is: 'pull-to-action',
+            is: 'pull-to-event',
             properties: {
-                /**
-                 * The callback action that will be executed
-                 * when the user releases the pull element
-                 *
-                 * @attribute action
-                 * @type function
-                 * @default alert("You need to set the action attribute")
-                 */
-                action: {
-                    type: String,
-                    value: 'alert("You need to set the action attribute")',
-                    notify: true
-                },
                 /**
                  * The default color in which the refresh icon will
                  * be displayed
@@ -241,13 +228,14 @@ __Example:__
                     }, 1000) : scaleAway()
                 }
 
+                var that = this;
                 /** Animates refreshIcon returning to the set Distance, then triggers Dev action **/
                 function bounceToDistance() {
                     dragStore > distance ? (dragStore -= 4, spinStore += 4, setTimeout(function () {
                         attribute.drag = dragStore,
                                 attribute.spin = spinStore,
                                 bounceToDistance()
-                    }, 1)) : (eval(action), "undefined" == typeof actionTrigger ? (setTimeout(function () {
+                    }, 1)) : (that.fire('pull'), "undefined" == typeof actionTrigger ? (setTimeout(function () {
                         scaleAway()
                     }, 1000),
                             refresh.classList.add("hidden"),
@@ -282,8 +270,7 @@ __Example:__
                         refreshSpinner = Polymer.dom(this.root).querySelector(".refreshSpinner"),
                         dragStore = 0,
                         spinStore = -270,
-                        distance = this.distance,
-                        action = this.action;
+                        distance = this.distance;
                 this.updateStyles();
                 var attribute = this,
                         container = document.querySelectorAll(attribute.container)[0],
