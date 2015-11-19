@@ -229,6 +229,7 @@ __Example:__
                 }
 
                 var that = this;
+
                 /** Animates refreshIcon returning to the set Distance, then triggers Dev action **/
                 function bounceToDistance() {
                     dragStore > distance ? (dragStore -= 4, spinStore += 4, setTimeout(function () {
@@ -316,7 +317,7 @@ __Example:__
             },
 
             attached: function () {
-                this.enabled = true;
+                this.updateEnabled();
             },
 
             detached: function () {
@@ -339,12 +340,17 @@ __Example:__
 
             updateEnabled: function () {
                 if (this.init) {
-                    if (this.enabled) {
-                        this.addEvents();
-                    } else {
-                        this.removeEvents();
-                    }
+                    this._enable(this.enabled);
                 }
+            },
+
+            _enable: function (enabled) {
+                if (enabled) {
+                    this.addEvents();
+                } else {
+                    this.removeEvents();
+                }
+
             },
 
             /**
