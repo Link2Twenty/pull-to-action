@@ -161,16 +161,16 @@ __Example:__
                     notify: true
                 },
                 /**
-                 * Enable / Disable pull to action animation and action
+                 * activate / deactivate pull
                  *
-                 * @attribute enabled
+                 * @attribute active
                  * @type boolean
-                 * @default false
+                 * @default true
                  */
-                enabled: {
+                active: {
                     type: Boolean,
-                    value: false,
-                    observer: 'updateEnabled'
+                    value: true,
+                    observer: 'updateActive'
                 },
                 /**
                  * The distance until the refresh icon
@@ -316,11 +316,11 @@ __Example:__
             },
 
             attached: function () {
-                this.updateEnabled();
+                this.updateActive();
             },
 
             detached: function () {
-                this.enabled = false;
+                this.active = false;
             },
 
             addEvents: function () {
@@ -341,17 +341,12 @@ __Example:__
 
             },
 
-            updateEnabled: function () {
-                this._enable(this.enabled);
-            },
-
-            _enable: function (enabled) {
-                if (enabled) {
+            updateActive: function () {
+                if (this.active) {
                     this.addEvents();
                 } else {
                     this.removeEvents();
                 }
-
             },
 
             /**
