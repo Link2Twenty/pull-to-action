@@ -1,5 +1,5 @@
 {
-  "name": "pull-to-action",
+  "name": "pull-to-event",
   "version": "1.0.0",
   "description": "Polymer Web Component to trigger javaScript action on pulldown",
   "main": "pull-to-action.html",
