@@ -309,11 +309,10 @@ __Example:__
                             refreshSpinner.querySelector("#spinnerContainer").classList.remove("cooldown"),
                                     0 == container.scrollTop && dragStore >= distance ? bounceToDistance() : bounceToZero()
                         };
-                this.containerEl = container;
                 this.touchstartHandler = touchstartHandler;
                 this.touchmoveHandler = touchmoveHandler;
                 this.touchendHandler = touchendHandler;
-                this.init = true;
+                this.containerEl = container;
             },
 
             attached: function () {
@@ -325,23 +324,25 @@ __Example:__
             },
 
             addEvents: function () {
-                this.containerEl.addEventListener("touchstart", this.touchstartHandler, !1);
-                this.containerEl.addEventListener("touchmove", this.touchmoveHandler, !1);
-                this.containerEl.addEventListener("touchend", this.touchendHandler, !1);
+                if (this.containerEl != null) {
+                    this.containerEl.addEventListener("touchstart", this.touchstartHandler, !1);
+                    this.containerEl.addEventListener("touchmove", this.touchmoveHandler, !1);
+                    this.containerEl.addEventListener("touchend", this.touchendHandler, !1);
+                }
 
             },
 
             removeEvents: function () {
-                this.containerEl.removeEventListener("touchstart", this.touchstartHandler);
-                this.containerEl.removeEventListener("touchmove", this.touchmoveHandler);
-                this.containerEl.removeEventListener("touchend", this.touchendHandler);
+                if (this.containerEl != null) {
+                    this.containerEl.removeEventListener("touchstart", this.touchstartHandler);
+                    this.containerEl.removeEventListener("touchmove", this.touchmoveHandler);
+                    this.containerEl.removeEventListener("touchend", this.touchendHandler);
+                }
 
             },
 
             updateEnabled: function () {
-                if (this.init) {
-                    this._enable(this.enabled);
-                }
+                this._enable(this.enabled);
             },
 
             _enable: function (enabled) {
