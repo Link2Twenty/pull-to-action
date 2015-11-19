@@ -163,14 +163,14 @@ __Example:__
                 /**
                  * activate / deactivate pull
                  *
-                 * @attribute on
+                 * @attribute active
                  * @type boolean
                  * @default true
                  */
-                on: {
+                active: {
                     type: Boolean,
-                    value: false,
-                    observer: 'updateOn'
+                    value: true,
+                    observer: 'updateActive'
                 },
                 /**
                  * The distance until the refresh icon
@@ -316,11 +316,11 @@ __Example:__
             },
 
             attached: function () {
-                this.updateOn();
+                this.updateActive();
             },
 
             detached: function () {
-                this.on = false;
+                this.active = false;
             },
 
             addEvents: function () {
@@ -341,8 +341,8 @@ __Example:__
 
             },
 
-            updateOn: function () {
-                if (this.on) {
+            updateActive: function () {
+                if (this.active) {
                     this.addEvents();
                 } else {
                     this.removeEvents();
