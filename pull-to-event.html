@@ -40,7 +40,7 @@ __Example:__
         }
 
         .refreshSpinner {
-            padding: 0px;
+            padding: 0;
             margin: 3px;
             width: 26px;
             height: 26px
@@ -238,7 +238,7 @@ __Example:__
                                 bounceToDistance()
                     }, 1)) : (that.fire('pull'), "undefined" == typeof actionTrigger ? (setTimeout(function () {
                         scaleAway()
-                    }, 1000),
+                    }, 300),
                             refresh.classList.add("hidden"),
                             refreshSpinner.classList.remove("hidden"),
                             refreshSpinner.setAttribute("active", "")) : actionTimer())
