@@ -346,6 +346,9 @@ __Example:__
                     this.addEvents();
                 } else {
                     this.removeEvents();
+                    if (this.touchendHandler != null) {
+                        this.touchendHandler();
+                    }
                 }
             },
 
