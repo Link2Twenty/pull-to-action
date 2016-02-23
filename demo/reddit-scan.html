@@ -55,8 +55,10 @@ Example:
       auto id="ajaxGet"
       url="https://www.reddit.com/new/.json"
       handle-as="json"
+	  loading={{loading}}
       last-response="{{response}}"></iron-ajax>
 
+	  <paper-material elevation="1">Page is loading content: <b>{{loading}}</b><i></i></paper-material>
       <template is="dom-repeat" items="{{response.data.children}}">
           <paper-material elevation="1">
             <div class="header"><a href="{{item.data.url}}"><b>{{item.data.title}}</b></a></div>
@@ -70,8 +72,29 @@ Example:
 <script>
   Polymer({
     is: 'reddit-scan',
+	properties: {
+		loading: {
+			type: String,
+			notify: true,
+			observer: 'checkLoading'
+		},
+		error: {
+			type: String,
+			notify: true,
+			observer: 'checkLoading'
+		}
+	},
     doSend: function () {
-     this.$.ajaxGet.generateRequest();
-   },
+		this.$.ajaxGet.generateRequest();
+		actionTrigger = 1;
+		this.checkLoading();
+	},
+	checkLoading: function() {
+		if(this.loading == true) {
+			this.checkLoading;
+		} else {
+			actionTrigger = 0;
+		}
+	}
   });
 </script>
