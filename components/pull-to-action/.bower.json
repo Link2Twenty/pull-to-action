@@ -24,11 +24,11 @@
     "paper-material": "PolymerElements/paper-material#^1.0.0",
     "paper-spinner": "PolymerElements/paper-spinner#^1.0.0"
   },
-  "_release": "a0c89d9d94",
+  "_release": "fdb11a926c",
   "_resolution": {
     "type": "branch",
     "branch": "master",
-    "commit": "a0c89d9d94c2bb048acaadf285f69e2de7038350"
+    "commit": "fdb11a926c19ac7f8d843d84ea618258f5666215"
   },
   "_source": "git://github.com/link2twenty/pull-to-action.git",
   "_target": "*",

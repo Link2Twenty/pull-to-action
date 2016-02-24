@@ -1,6 +1,5 @@
 # < pull-to-action >
-Have a quick look at the [Component page](http://open-elements.org/elements/pull-to-action) 
-or go straight to the  [Demo](http://open-elements.org/elements/pull-to-action?view=demo:demo/index.html)
+Have a quick look at the [Component page](http://link2twenty.github.io/pull-to-action) 
 
 Here's a sneak peak at the demo in gif form if you're in a hurry
 
