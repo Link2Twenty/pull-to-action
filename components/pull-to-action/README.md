@@ -1,16 +1,12 @@
 # < pull-to-action >
 Have a quick look at the [Component page](http://link2twenty.github.io/pull-to-action) 
 
-Here's a sneak peak at the demo in gif form if you're in a hurry
-
-![Screenshot](http://s16.postimg.org/c0288ecqd/pull_demo.gif)
-
 ## What is it?
 "pull-to-action" is a polymer element to perform a pull to refresh like animation and action within web apps.
 
 Before we get started here is a little example of what it can look like baked into a real app
 
-![Screenshot](http://s24.postimg.org/f8vng9l5h/new_animation.gif)
+![Screenshot](https://media.giphy.com/media/l2JJraDUGjqLQQQyQ/giphy.gif)
 
 ## Getting started
 
@@ -56,7 +52,7 @@ Now that you have imported it you can get to using it on your page
 
 Now with very little code we have made a simple red spinning icon to reload the page, in this instance it reload the whole URL but you could easily have a JS function to generate some JSON to repopulate the page, creating a seamless app like experience.
 
-![example image](http://s30.postimg.org/ok5mf53dd/simple.gif)
+![example image](https://media.giphy.com/media/3ornk5BJKhkSN6fTbO/giphy.gif)
 
 ##### Running Unit Tests
 
@@ -68,94 +64,79 @@ Make sure that you have `wct` installed on your local machine. To get more detai
 
 ## Advanced
 ### Using the actionTimer hook
-The actionTimer hook is in place to get the element to keep spinning while you load in your data, it is not needed but makes the app seem more responsive. I will show you a test app twice, once with the hook implemented and once without.
+The actionTimer hook is in place to get the element to keep spinning while you load in your data, it is not needed but makes the app seem more responsive. I will show you a test app twice using iron-ajax and pull-to-action, once with the hook implemented and once without.
 
-We will be using promises if you don't know what they are or aren't confident with them there is a nice little guide [here](http://www.sitepoint.com/overview-javascript-promises/).
+Below is a simple element called reddit-scan, it uses iron-ajax to create a list of the lastest posts to reddit 
+
+```
+<dom-module id="reddit-scan">
+  <template>
+    <iron-ajax
+      auto id="ajaxGet"
+      url="https://www.reddit.com/new/.json"
+      handle-as="json"
+	  loading={{loading}}
+      last-response="{{response}}"></iron-ajax>
+
+	  <paper-material elevation="1">Page is loading content: <b>{{loading}}</b><i></i></paper-material>
+      <template is="dom-repeat" items="{{response.data.children}}">
+          <paper-material elevation="1">
+            <div class="header"><a href="{{item.data.url}}"><b>{{item.data.title}}</b></a></div>
+            <span class="subreddit">Posted in <i>{{item.data.subreddit}}</i> by <i>{{item.data.author}}</i></span>
+          </paper-material>
+      </template>
+  </template>
+</dom-module>
+```
 
 ### With actionTimer implemented
-Below is a simple function that I will call with action.
+
+Here is the script section, with actionTrigger implemented
 
 ```
-var actionTrigger; // I have declared the variable at the top level so we can see it
-function changeText() { // this is the function we will call with action="changeText()"
-	var promise = new Promise(function(resolve, reject) {
-		actionTrigger = 1; // the first thing we do is set the actionTrigger variable to 1, this lets pull-to-action know you are getting the data
-		var request = new XMLHttpRequest();
-		request.open('GET', 'json.js', true);
-
-		request.onload = function() {
-			if (this.status >= 200 && this.status < 400) {
-				// Success!
-				resolve(this.response);
-			} else {
-				// Not so much =(
-				reject(Error(request.statusText));
-			};
+Polymer({
+  is: 'reddit-scan',
+	properties: {
+		loading: {
+			type: String,
+			notify: true,
+			observer: '_checkLoading' // This will run _checkLoading when loading changes
+		},
+		error: {
+			type: String,
+			notify: true,
+			observer: '_checkLoading'
 		}
-
-		request.onerror = function() {
-			// Normally means timeout
-			reject(Error('Timeout error'));
-		};
-		
-		request.send();
-	});
-	
-	promise.then(function(data) {
-		var parseData = JSON.parse(data);
-		var out = "";
-		var i;
-		for(i = 0; i < parseData.update.length; i++) {
-			out += '<msg-card>' + parseData.update[i].message + '</msg-card><br>';
+	},
+  doSend: function () {
+		this.$.ajaxGet.generateRequest();
+		actionTrigger = 1; 	// This sets actionTrigger to 1 when "document.querySelector('reddit-scan').doSend()" 
+												// is called in the main application
+	},
+	_checkLoading: function() {
+		if(!this.loading == true) { // When loading is not true
+			actionTrigger = 0; // Set actionTrigger to 0, making the spinner hide.
 		}
-		document.getElementById("container").innerHTML = out;
-		actionTrigger = 0; // now that the data has been got and we're putting the data in we can let pull-to-action know we are done by setting actionTrigger to 0, this triggers the scaleAway animation
-	}).catch(function(error) {
-		actionTrigger = 0; // this is stop the spinner persisting if there is an error, you can add anything in here, I quite like having a paper-toast element be called to let us know there is a problem
-  });
-}
-changeText(); // we can use this to populate the page to start with.
+	}
+});
 ```
 
-The code might seem quite a bit longer, but promises are a good habbit to get into anyway, here is a gif of the program.
-
-![Screenshot](http://gifyu.com/images/withactionToggle.gif)
+![Screenshot](https://media.giphy.com/media/l2JJraDUGjqLQQQyQ/giphy.gif)
 
 ### Without actionTimer implemented
-Here we have the same code but without using promises and without using actionTimer
+Here we have the same code but without using actionTimer
 
 ```
-function changeText() {
-	var request = new XMLHttpRequest();
-	request.open('GET', 'json.js', true);
-
-	request.onload = function() {
-	  if (this.status >= 200 && this.status < 400) {
-		// Success!
-		var data = JSON.parse(this.response);
-		var out = "";
-		var i;
-		for(i = 0; i < data.update.length; i++) {
-			out += '<msg-card>' + data.update[i].message + '</msg-card><br>';
-		}
-		document.getElementById("container").innerHTML = out;
-	  } else {
-		// We reached our target server, but it returned an error
-		alert('well this does not look right');
-	  }
-	};
-
-	request.onerror = function() {
-	  // There was a connection error of some sort
-	};
-	
-	request.send();
-}
-changeText();
+Polymer({
+  is: 'reddit-scan',
+  doSend: function () {
+		this.$.ajaxGet.generateRequest();
+	}
+});
 ```
 The code is quite a bit shorter but no matter how long it take to load the data the animation time will be the same. Gif below.
 
-![Screenshot](http://gifyu.com/images/withoutactionToggle.gif)
+![Screenshot](https://media.giphy.com/media/l0IpXjo4kJLKcxqdW/giphy.gif)
 
 ## Conclusion
-If you don't feel confident using promises pull-to-action will work fine without them, but if you know how to use them, or even if you want to learn how to use them, it makes a huge difference to the aesthetics of your app.
+If you don't feel confident using actionTrigger pull-to-action will work fine without it, but if you do use it, it can make a huge difference to the aesthetics of your app.
