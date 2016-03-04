@@ -1,6 +1,7 @@
 <link rel="import" href="../../polymer/polymer.html">
 <link rel="import" href="../../iron-ajax/iron-ajax.html">
 <link rel="import" href="../../paper-material/paper-material.html">
+<link rel="import" href="../../paper-spinner/paper-spinner.html">
 
 <dom-module id="reddit-scan">
 
@@ -19,6 +20,11 @@
         margin: 5px auto;
         background: #fff;
         z-index: -1;
+      }
+      :host #spinContainer {
+	width: 100%;
+	text-align: center;
+	margin: 10px auto;
       }
       :host .subreddit{
         font-size: 13px;  
@@ -41,6 +47,7 @@
       last-response="{{response}}"></iron-ajax>
 
 	  <paper-material elevation="1">Page is loading content: <b>{{loading}}</b><i></i></paper-material>
+	  <div id="spinContainer"><paper-spinner active></paper-spinner></div>
       <template is="dom-repeat" items="{{response.data.children}}">
           <paper-material elevation="1">
             <div class="header"><a href="{{item.data.url}}"><b>{{item.data.title}}</b></a></div>
@@ -74,6 +81,7 @@
   	_checkLoading: function() {
   		if(!this.loading == true) {
   			actionTrigger = 0;
+  			this.$.spinContainer.style.display = "none";
   		}
   	}
   });
