@@ -1,16 +1,12 @@
 # < pull-to-action >
 Have a quick look at the [Component page](http://link2twenty.github.io/pull-to-action) 
 
-Here's a sneak peak at the demo in gif form if you're in a hurry
-
-![Screenshot](http://s16.postimg.org/c0288ecqd/pull_demo.gif)
-
 ## What is it?
 "pull-to-action" is a polymer element to perform a pull to refresh like animation and action within web apps.
 
 Before we get started here is a little example of what it can look like baked into a real app
 
-![Screenshot](http://s24.postimg.org/f8vng9l5h/new_animation.gif)
+![Screenshot](https://media.giphy.com/media/l2JJraDUGjqLQQQyQ/giphy.gif)
 
 ## Getting started
 
