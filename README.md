@@ -66,7 +66,6 @@ Make sure that you have `wct` installed on your local machine. To get more detai
 ### Using the actionTimer hook
 The actionTimer hook is in place to get the element to keep spinning while you load in your data, it is not needed but makes the app seem more responsive. I will show you a test app twice using iron-ajax and pull-to-action, once with the hook implemented and once without.
 
-### With actionTimer implemented
 Below is a simple element called reddit-scan, it uses iron-ajax to create a list of the lastest posts to reddit 
 
 ```
@@ -89,6 +88,8 @@ Below is a simple element called reddit-scan, it uses iron-ajax to create a list
   </template>
 </dom-module>
 ```
+
+### With actionTimer implemented
 
 Here is the script section, with actionTrigger implemented
 
