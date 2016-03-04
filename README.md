@@ -71,36 +71,7 @@ Below is a simple element called reddit-scan, it uses iron-ajax to create a list
 
 ```
 <dom-module id="reddit-scan">
-
   <template>
-    <style>
-      :host {
-        display: block;
-        box-sizing: border-box;
-        margin: 0 auto;
-      }
-      :host paper-material {
-        max-width: 500px;
-        min-width: 250px;
-        width: 85%;
-        padding: 5px;
-        margin: 5px auto;
-        background: #fff;
-        z-index: -1;
-      }
-      :host .subreddit{
-        font-size: 13px;  
-      }
-      :host .header a {
-        text-decoration: none;
-        color: black;
-        text-align: justify;
-      }
-      :host .header a:hover {
-        text-decoration: underline;
-        color: darkorange;
-      }
-    </style>
     <iron-ajax
       auto id="ajaxGet"
       url="https://www.reddit.com/new/.json"
@@ -116,7 +87,6 @@ Below is a simple element called reddit-scan, it uses iron-ajax to create a list
           </paper-material>
       </template>
   </template>
-
 </dom-module>
 ```
 
