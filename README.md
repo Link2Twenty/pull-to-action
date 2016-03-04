@@ -52,7 +52,7 @@ Now that you have imported it you can get to using it on your page
 
 Now with very little code we have made a simple red spinning icon to reload the page, in this instance it reload the whole URL but you could easily have a JS function to generate some JSON to repopulate the page, creating a seamless app like experience.
 
-![example image](http://s30.postimg.org/ok5mf53dd/simple.gif)
+![example image](https://media.giphy.com/media/3ornk5BJKhkSN6fTbO/giphy.gif)
 
 ##### Running Unit Tests
 
