@@ -479,6 +479,8 @@ Custom property | Description | Default
           /**
            * The panel that is being selected. `drawer` for the drawer panel and
            * `main` for the main panel.
+           *
+           * @type {string|null}
            */
           selected: {
             reflectToAttribute: true,
@@ -814,7 +816,7 @@ Custom property | Description | Default
           var focusedChildCameFromDrawer = false;
           var autoFocusedNode = this._getAutoFocusedNode();
 
-          while (!focusedChildCameFromDrawer && path[0] && path[0].hasAttribute) {
+          while (!focusedChildCameFromDrawer && path[0]) {
             focusedChildCameFromDrawer = path.shift() === drawerContent;
           }
           if (!focusedChildCameFromDrawer && autoFocusedNode) {

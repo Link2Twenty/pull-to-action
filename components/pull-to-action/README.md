@@ -23,10 +23,15 @@ bower install --save pull-to-action
 | Attribute Name | Functionality | Default |
 |----------------|-------------|-------------|
 | action* | A callback function that for which action should be performed | alert("You need to set the action attribute") |
-| color | Sets color of the refresh icon | #ccc |
 | container | the container element (if identifing with id start with # and . for class) | body |
 | distance | How far the user has to drag the screen | 100 |
 required*
+
+### Styling
+
+Custom property | Description | Default
+----------------|-------------|----------
+`--pull-icon-color` | Color of refresh icon. | `#ccc`
 
 ### How to use
 
