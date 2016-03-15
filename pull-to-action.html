@@ -2,9 +2,10 @@
 <link rel="import" href="../paper-spinner/paper-spinner.html" />
 
 <!--
+### Pull-to-action:
 Polymer element to trigger javaScript action on pulldown.
 
-__Example:__
+### Example:
 
     <pull-to-action 
       action="location.reload()" 
@@ -20,7 +21,17 @@ __Example:__
     </pull-to-action> -> runs custom fuction
 
  __Remember:__ placement is key the contain will mean it can only be controlled within that element, but the position is still relative
+ 
+### Styling
 
+The following custom properties are available for styling:
+
+Custom property | Description | Default
+----------------|-------------|----------
+`--pull-icon-color` | Color of refresh icon. | `#ccc`
+
+  
+@element pull-to-action
 @demo
 -->
 
