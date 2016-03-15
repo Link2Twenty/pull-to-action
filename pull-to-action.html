@@ -7,16 +7,17 @@ Polymer element to trigger javaScript action on pulldown.
 
 ### Example:
 
+You can type your whole script into the action attribute 
+
     <pull-to-action 
       action="location.reload()" 
-      color="red" 
       container="#container">
-    </pull-to-action> -> reloads the whole page
+    </pull-to-action>
 
+But that can get a bit long, so you can call a custom function. Which not only makes you code more readable, but makes it all look a little tidier too.
 
     <pull-to-action 
       action="someFunc()" 
-      color="#CCC" 
       container="#someID">
     </pull-to-action> -> runs custom fuction
 
