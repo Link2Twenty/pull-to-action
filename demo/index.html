@@ -16,8 +16,10 @@
     body {
       background: #ccc
     }
-    .zindex {
-      z-index: 9999;
+    </style>
+    <style is="custom-style">
+    :root {
+      --pull-icon-color: #3949AB;
     }
     </style>
   </head>
@@ -25,7 +27,7 @@
   <paper-drawer-panel id="paperDrawerPanel">
     <div drawer >Might be a good idea to get into mobile mode</div>
     <paper-header-panel id="h" main class="fit">
-      <pull-to-action class="zindex" action="document.querySelector('reddit-scan').doSend()" color="3949AB" container="#mainContainer"></pull-to-action>
+      <pull-to-action action="document.querySelector('reddit-scan').doSend()" container="#mainContainer"></pull-to-action>
       <paper-toolbar id="nav">
         <paper-icon-button icon="arrow-back" alt="Back"></paper-icon-button>
         <div class="bottom title">Pull to action</div>

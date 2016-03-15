@@ -43,9 +43,13 @@ __Example:__
       height:22px
     }
     .refreshStem {
+      stroke: var(--pull-icon-color, #ccc);
       stroke-dasharray: 35;
       fill:rgba(0, 0, 0, 0);
       stroke-width:1
+    }
+    .refreshHead {
+      fill: var(--pull-icon-color, #ccc);
     }
     .hidden {
       display:none
@@ -127,19 +131,6 @@ __Example:__
           notify: true
         },
         /**
-        * The default color in which the refresh icon will
-        * be displayed
-        *
-        * @attribute color
-        * @type string
-        * @default '#ccc'
-        */
-        color: {
-          type: String,
-          value: '#ccc',
-          notify: true
-        },
-        /**
         * The default container to which the pull-to-action
         * element will bind to
         *
@@ -170,17 +161,17 @@ __Example:__
         * these are calculated by the JS
         *
         */
-        desat: {
+        _desat: {
           type: String,
           value: '100',
           observer: 'updateStyles'
         },
-        drag: {
+        _drag: {
           type: Number,
           value: 0,
           observer: 'updateStyles'
         },
-        spin: {
+        _spin: {
           value: -270,
           observer: 'updateStyles'
         }
@@ -197,7 +188,7 @@ __Example:__
           refreshSpinner.classList.remove("hidden"),
           refreshSpinner.setAttribute("active",""),
           actionTimerEnd()):actionTimerEnd():(spinStore++,setTimeout(function(){
-            attribute.spin=spinStore,
+            attribute._spin=spinStore,
             actionTimer()
           },1))}
         function actionTimerEnd(){
@@ -208,8 +199,8 @@ __Example:__
         /** Animates refreshIcon returning to the set Distance, then triggers Dev action **/
         function bounceToDistance(){
         dragStore>distance?(dragStore-=4,spinStore+=4,setTimeout(function(){
-          attribute.drag=dragStore,
-          attribute.spin=spinStore,
+          attribute._drag=dragStore,
+          attribute._spin=spinStore,
           bounceToDistance()},1)):(eval(action),"undefined"==typeof actionTrigger?(setTimeout(function(){
             scaleAway()
           },1000),
@@ -222,7 +213,7 @@ __Example:__
           refreshShadow.classList.add("scale"),
           setTimeout(function(){
             dragStore=0,
-            attribute.drag=dragStore,
+            attribute._drag=dragStore,
             refreshShadow.classList.remove("scale"),
             refreshSpinner.removeAttribute("active")
           },500)
@@ -230,13 +221,11 @@ __Example:__
         /** Roll refreshIcon back up out of view **/
         function bounceToZero(){
           dragStore>0&&(dragStore--,spinStore--,setTimeout(function(){
-            attribute.drag=dragStore,
-            attribute.spin=spinStore,
+            attribute._drag=dragStore,
+            attribute._spin=spinStore,
             bounceToZero()
           },5))
         }
-        Polymer.dom(this.root).querySelector(".refreshHead").style.fill=this.color;
-        Polymer.dom(this.root).querySelector(".refreshStem").style.stroke=this.color;
         var refreshShadow=Polymer.dom(this.root).querySelector(".refreshShadow"),
         refresh=Polymer.dom(this.root).querySelector(".refresh"),
         refreshSpinner=Polymer.dom(this.root).querySelector(".refreshSpinner"),
@@ -257,7 +246,7 @@ __Example:__
           refresh.classList.remove("hidden"),
           refreshSpinner.classList.add("hidden"),
           spinStore=-270,
-          attribute.spin=spinStore,
+          attribute._spin=spinStore,
           1==a.touches.length&&(lastTouchY=a.touches[0].clientY,
           startTouchY=a.touches[0].clientY)
         },
@@ -270,9 +259,9 @@ __Example:__
           0==container.scrollTop&&(dragStore=endTouchY-startTouchY,
           r>0?spinStore+=spinStore<=0?dragStore/distance*10:dragStore/distance*2:spinStore-=dragStore/distance*5,
           desatStore=100-dragStore/distance*100,
-          attribute.drag=dragStore,
-          attribute.spin=spinStore,
-          attribute.desat=desatStore),
+          attribute._drag=dragStore,
+          attribute._spin=spinStore,
+          attribute._desat=desatStore),
           /** if you're at the top of the container, start animations **/
           0==container.scrollTop&&r>0?void t.preventDefault():dragStore>0?void t.preventDefault():void 0
         },
@@ -287,7 +276,7 @@ __Example:__
       },
      /**
      * Updates all the css styles
-     * for top, opacity, scale, 
+     * for top, opacity, 
      * rotateZ, grayscale, strokeDashoffset
      * and strokeWidth.
      */
@@ -295,13 +284,12 @@ __Example:__
         var refreshShadow=Polymer.dom(this.root).querySelector(".refreshShadow"),
         refreshIcon=Polymer.dom(this.root).querySelector(".refreshIcon"),
         refreshStem=Polymer.dom(this.root).querySelector(".refreshStem");       
-        refreshShadow.style.top=(this.drag-50)/3+"px",
-        refreshShadow.style.opacity=this.drag/this.distance,
-        refreshShadow.style.transform="scale("+this.scale+")",
-        refreshIcon.style.transform="rotateZ("+this.spin+"deg)",
-        refreshIcon.style.filter="grayscale("+this.desat+"%)",
-        refreshStem.style.strokeDashoffset=35>=35*(this.drag/this.distance)?35-35*(this.drag/this.distance):0,
-        refreshStem.style.strokeWidth=2>=2*(this.drag/this.distance)?2*(this.drag/this.distance):2;
+        refreshShadow.style.top=(this._drag-50)/3+"px",
+        refreshShadow.style.opacity=this._drag/this.distance,
+        refreshIcon.style.transform="rotateZ("+this._spin+"deg)",
+        refreshIcon.style.filter="grayscale("+this._desat+"%)",
+        refreshStem.style.strokeDashoffset=35>=35*(this._drag/this.distance)?35-35*(this._drag/this.distance):0,
+        refreshStem.style.strokeWidth=2>=2*(this._drag/this.distance)?2*(this._drag/this.distance):2;
       }
     });
   })();
