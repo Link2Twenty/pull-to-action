@@ -7,22 +7,22 @@ Polymer element to trigger javaScript action on pulldown.
 
 ### Example:
 
-You can type your whole script into the action attribute 
+You can type your whole script into the action attribute
 
-    <pull-to-action 
-      action="location.reload()" 
+    <pull-to-action
+      action="location.reload()"
       container="#container">
     </pull-to-action>
 
 But that can get a bit long, so you can call a custom function. Which not only makes you code more readable, but makes it all look a little tidier too.
 
-    <pull-to-action 
-      action="someFunc()" 
+    <pull-to-action
+      action="someFunc()"
       container="#someID">
     </pull-to-action>
 
  __Remember:__ placement is key the contain will mean it can only be controlled within that element, but the position is still relative
- 
+
 ### Styling
 
 The following custom properties are available for styling:
@@ -31,7 +31,7 @@ Custom property | Description | Default
 ----------------|-------------|----------
 `--pull-icon-color` | Color of refresh icon. | `#ccc`
 
-  
+
 @element pull-to-action
 @demo
 -->
@@ -39,11 +39,11 @@ Custom property | Description | Default
 <dom-module id="pull-to-action">
   <style>
     :host {
-      width:100%;
+      width: 100%;
       position: relative;
       top: 0;
       left: 0;
-      right: 0
+      right: 0;
     }
     .refresh {
       background-color:#fff;
@@ -52,7 +52,7 @@ Custom property | Description | Default
     .refreshSpinner {
       padding:5px;
       width:22px;
-      height:22px
+      height:22px;
     }
     .refreshStem {
       stroke: var(--pull-icon-color, #ccc);
@@ -82,6 +82,7 @@ Custom property | Description | Default
       border-color:#fff;
       border-style: solid;
       border-width: 3px;
+      z-index: 9999;
     }
     @-webkit-keyframes scaleAway {
       0% {transform:scale(1)}
@@ -112,12 +113,12 @@ Custom property | Description | Default
       document.addEventListener("touchmove",touchmoveDisable,!1);
     </script>
     <paper-material class="refreshShadow" elevation="2">
-      <svg class="refreshIcon refresh" viewBox="0 0 24 24"><g>    
+      <svg class="refreshIcon refresh" viewBox="0 0 24 24"><g>
         <path class="refreshStem" transform="rotate(-45 12.000000476837158,12.000000476837158), translate(24), scale(-1, 1)"
         d="m5.02361,12c0,-3.87126 3.12203,-7.00698 6.97639,-7.00698c3.85436,0 6.97639,3.13572 6.97639,
-        7.00698c0,3.87126 -3.12203,7.00698 -6.97639,7.00698c-3.85436,0 -6.97639,-3.13572 -6.97639,-7.00698z" />                
+        7.00698c0,3.87126 -3.12203,7.00698 -6.97639,7.00698c-3.85436,0 -6.97639,-3.13572 -6.97639,-7.00698z" />
         <rect fill="#ffffff" stroke-width="0" x="17" y="11.029" width="4" height="3" stroke="#ffffff"/>
-        <path class="refreshHead" transform="rotate(-90 16.5,7.5) " 
+        <path class="refreshHead" transform="rotate(-90 16.5,7.5) "
         d="m12.97192,10.96708l0,-6.99941l7.06761,6.99941l-7.06761,0z" />
       </g></svg>
       <paper-spinner class="refresh refreshSpinner hidden"></paper-spinner>
@@ -288,14 +289,14 @@ Custom property | Description | Default
       },
      /**
      * Updates all the css styles
-     * for top, opacity, 
+     * for top, opacity,
      * rotateZ, grayscale, strokeDashoffset
      * and strokeWidth.
      */
       updateStyles: function () {
         var refreshShadow=Polymer.dom(this.root).querySelector(".refreshShadow"),
         refreshIcon=Polymer.dom(this.root).querySelector(".refreshIcon"),
-        refreshStem=Polymer.dom(this.root).querySelector(".refreshStem");       
+        refreshStem=Polymer.dom(this.root).querySelector(".refreshStem");
         refreshShadow.style.top=(this._drag-50)/3+"px",
         refreshShadow.style.opacity=this._drag/this.distance,
         refreshIcon.style.transform="rotateZ("+this._spin+"deg)",
