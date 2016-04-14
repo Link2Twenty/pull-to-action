@@ -40,13 +40,18 @@ If you are looking at useing other peoples custom polymer elements I am going to
 Put a link to pull to action in your header, it should look something like.
 ```html
 <link rel="import" href="bower_components/pull-to-action/pull-to-action.html">
+<style is="custom-style">
+  :root {
+    --pull-icon-color: red;
+  }
+</style>
 ```
 
 Now that you have imported it you can get to using it on your page
 ```html
 <body>
 <div id="scrollablecontainer">
-<pull-to-action action="location.reload()" color="red" container="#scrollablecontainer"></pull-to-action>
+<pull-to-action action="location.reload()" container="#scrollablecontainer"></pull-to-action>
 <h1>So much content</h1>
 ... <br>
 ... <br>
