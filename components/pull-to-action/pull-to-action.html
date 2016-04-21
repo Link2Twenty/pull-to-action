@@ -4,23 +4,33 @@
 <!--
 ### Pull-to-action:
 Polymer element to trigger javaScript action on pulldown.
+
 ### Example:
+
 You can type your whole script into the action attribute
+
     <pull-to-action
       action="location.reload()"
       container="#container">
     </pull-to-action>
+    
 But that can get a bit long, so you can call a custom function. Which not only makes you code more readable, but makes it all look a little tidier too.
+
     <pull-to-action
       action="someFunc()"
       container="#someID">
     </pull-to-action>
+    
  __Remember:__ placement is key the contain will mean it can only be controlled within that element, but the position is still relative
+ 
 ### Styling
+
 The following custom properties are available for styling:
+
 Custom property | Description | Default
 ----------------|-------------|----------
 `--pull-icon-color` | Color of refresh icon. | `#ccc`
+
 @element pull-to-action
 @demo
 -->
