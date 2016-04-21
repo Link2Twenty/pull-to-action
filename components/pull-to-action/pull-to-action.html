@@ -4,34 +4,23 @@
 <!--
 ### Pull-to-action:
 Polymer element to trigger javaScript action on pulldown.
-
 ### Example:
-
 You can type your whole script into the action attribute
-
     <pull-to-action
       action="location.reload()"
       container="#container">
     </pull-to-action>
-
 But that can get a bit long, so you can call a custom function. Which not only makes you code more readable, but makes it all look a little tidier too.
-
     <pull-to-action
       action="someFunc()"
       container="#someID">
     </pull-to-action>
-
  __Remember:__ placement is key the contain will mean it can only be controlled within that element, but the position is still relative
-
 ### Styling
-
 The following custom properties are available for styling:
-
 Custom property | Description | Default
 ----------------|-------------|----------
 `--pull-icon-color` | Color of refresh icon. | `#ccc`
-
-
 @element pull-to-action
 @demo
 -->
@@ -201,26 +190,42 @@ Custom property | Description | Default
           value: 0
         },
       },
-     /**
-     * 
-     */
-     _actionTimer: function(){
-      var $this = this;
-      this._spin.toFixed(0)%360==270?1===actionTrigger?(Polymer.dom(this.root).querySelector(".refresh").classList.add("hidden"),
-      Polymer.dom($this.root).querySelector(".refreshSpinner").classList.remove("hidden"),
-      Polymer.dom($this.root).querySelector(".refreshSpinner").setAttribute("active",""),
-      this._actionTimerEnd()):this._actionTimerEnd():(this._spin++,setTimeout(function(){
-        $this._actionTimer()
-      },1))},
-     /**
-     * Method to detect when actionTrigger 
-     * is no longer 1
-     */
+      /**
+      * Method to check icon has rotated 
+      * to the correct place before proceeding
+      * with the animation
+      */
+      _actionTimer: function(){
+        var $this = this;
+        if (this._spin.toFixed(0) % 360 == 270) {
+          if (1 === actionTrigger) { 
+            Polymer.dom($this.root).querySelector(".refresh").classList.add("hidden"),
+            Polymer.dom($this.root).querySelector(".refreshSpinner").classList.remove("hidden"),
+            Polymer.dom($this.root).querySelector(".refreshSpinner").setAttribute("active", ""),
+            $this._actionTimerEnd();
+          } else {
+            $this._actionTimerEnd();
+          }
+        } else {
+          $this._spin++, 
+          setTimeout(function() {
+            $this._actionTimer();
+          }, 1);
+        }
+      },
+      /**
+      * Method to detect when actionTrigger 
+      * is no longer 1
+      */
       _actionTimerEnd: function(){
         var $this = this;
-        1==actionTrigger?setTimeout(function(){
-          $this._actionTimerEnd()
-        },1000):this.scaleAway()
+        if (1 === actionTrigger) {
+          setTimeout(function(){
+            $this._actionTimerEnd();
+          },1000)
+        } else {
+          this.scaleAway();
+        }
       },
       /**
       * Method to cause refreshIcon
@@ -228,14 +233,26 @@ Custom property | Description | Default
       * distance
       */
       bounceToDistance: function(){
-      var $this = this;
-      this._drag>this.distance?(this._drag-=4,this._spin+=4,setTimeout(function(){
-        $this.bounceToDistance()},1)):(eval(this.action),"undefined"==typeof actionTrigger?(setTimeout(function(){
-          $this.scaleAway()
-        },1000),
-        Polymer.dom($this.root).querySelector(".refresh").classList.add("hidden"),
-        Polymer.dom($this.root).querySelector(".refreshSpinner").classList.remove("hidden"),
-        Polymer.dom($this.root).querySelector(".refreshSpinner").setAttribute("active","")):$this._actionTimer())
+        var $this = this;
+        if (this._drag>this.distance) {
+          $this._drag-=4,
+          $this._spin+=4,
+          setTimeout(function(){
+            $this.bounceToDistance();
+          },1);
+        } else {
+          eval(this.action);
+          if ("undefined" == typeof actionTrigger) {
+            setTimeout(function(){
+              $this.scaleAway();
+            },1000),
+            Polymer.dom($this.root).querySelector(".refresh").classList.add("hidden"),
+            Polymer.dom($this.root).querySelector(".refreshSpinner").classList.remove("hidden"),
+            Polymer.dom($this.root).querySelector(".refreshSpinner").setAttribute("active","");
+          } else {
+            $this._actionTimer();
+          }
+        }
       },
       /**
       * Method to make refreshIcon
@@ -256,10 +273,12 @@ Custom property | Description | Default
       * is not met on pull down
       */
       bounceToZero: function(){
-      var $this = this;
-        this._drag>0&&(this._drag--,this._spin--,setTimeout(function(){
-          $this.bounceToZero()
-        },5))
+        var $this = this;
+        if (this._drag > 0) {
+          this._drag--,this._spin--,setTimeout(function(){
+            $this.bounceToZero()
+          },5);
+        }
       },
       /**
       * Updates all the css styles
@@ -287,9 +306,11 @@ Custom property | Description | Default
         touchstartHandler=function(a){
           Polymer.dom($this.root).querySelector(".refresh").classList.remove("hidden"),
           Polymer.dom($this.root).querySelector(".refreshSpinner").classList.add("hidden"),
-          $this._spin=-270,
-          1==a.touches.length&&($this._lastTouchY=a.touches[0].clientY,
-          $this._startTouchY=a.touches[0].clientY)
+          $this._spin=-270;
+          if (1==a.touches.length) {
+            $this._lastTouchY=a.touches[0].clientY,
+            $this._startTouchY=a.touches[0].clientY;
+          }
         },
         /** on touch move (within container) **/
         touchmoveHandler=function(t){
@@ -305,8 +326,14 @@ Custom property | Description | Default
         },
         /** on touch end **/
         touchendHandler=function(){
-          Polymer.dom($this.root).querySelector(".refreshSpinner").querySelector("#spinnerContainer").classList.remove("cooldown"),
-          0==document.querySelectorAll($this.container)[0].scrollTop&&$this._drag>=$this.distance?$this.bounceToDistance():$this.bounceToZero()
+          Polymer.dom($this.root).querySelector(".refreshSpinner").querySelector("#spinnerContainer").classList.remove("cooldown");
+          if (0 == document.querySelectorAll($this.container)[0].scrollTop) {
+            if ($this._drag>=$this.distance) {
+              $this.bounceToDistance()
+            } else {
+              $this.bounceToZero()
+            }
+          }
         };
         document.querySelectorAll($this.container)[0].addEventListener("touchstart",touchstartHandler,!1),
         document.querySelectorAll($this.container)[0].addEventListener("touchmove",touchmoveHandler,!1),
