@@ -306,7 +306,7 @@ __Example:__
                         },
                         /** on touch end **/
                         touchendHandler = function () {
-                            refreshSpinner.querySelector("#spinnerContainer").classList.remove("cooldown"),
+                            refreshSpinner.$$("#spinnerContainer").classList.remove("cooldown"),
                                     0 == container.scrollTop && dragStore >= distance ? bounceToDistance() : bounceToZero()
                         };
                 this.touchstartHandler = touchstartHandler;
