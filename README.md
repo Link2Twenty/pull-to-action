@@ -1,3 +1,5 @@
+⚠️ DEPRECATED: This project is no longer actively developed ⚠️
+
 # < pull-to-action >
 Have a quick look at the [Component page](http://link2twenty.github.io/pull-to-action) 
 
